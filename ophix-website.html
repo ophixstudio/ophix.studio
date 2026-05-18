@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ophix — AI Creative Studio</title>
+  <meta name="description" content="AI-powered video creative for brands. UGC ads, YouTube channels, brand films. 48-hour turnarounds.">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════
+       TOKENS & RESET
+    ═══════════════════════════════════════════════════════ */
+    :root {
+      --void: #09090f;
+      --deep: #111022;
+      --surface: #1a1730;
+      --border: #2e2850;
+      --mist: #6b5f9e;
+      --lavender: #b8a0ff;
+      --dusk: #7b52c8;
+      --bone: #f0ece4;
+      --white: #fdfcff;
+      --dim: #8a80b0;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--void);
+      color: var(--bone);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(9, 9, 15, 0.75);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(46, 40, 80, 0.3);
+      z-index: 1000;
+      animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-logo svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .nav-logo-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--bone);
+    }
+
+    .nav-logo-text .x {
+      color: var(--lavender);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.3s;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links a:hover {
+      color: var(--lavender);
+    }
+
+    .nav-cta {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      background: var(--lavender);
+      color: var(--void);
+      border: none;
+      padding: 10px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(184, 160, 255, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 24px;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       HERO SECTION
+    ═══════════════════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(123, 82, 200, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lavender);
+      border: 1px solid rgba(184, 160, 255, 0.25);
+      padding: 8px 16px;
+      border-radius: 99px;
+      margin-bottom: 28px;
+      background: rgba(184, 160, 255, 0.06);
+    }
+
+    .hero-kicker::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lavender);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(40px, 7vw, 64px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--lavender);
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--dim);
+      line-height: 1.8;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 80px;
+    }
+
+    .btn {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 14px 32px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--lavender);
+      color: var(--void);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(184, 160, 255, 0.25);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--bone);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--lavender);
+      color: var(--lavender);
+      transform: translateY(-2px);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       STATS BAR
+    ═══════════════════════════════════════════════════════ */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat {
+      padding: 32px 40px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-num span {
+      color: var(--lavender);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--dim);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      .stat {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 24px 20px;
+      }
+      .stat:last-child {
+        border-bottom: none;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       CONTENT SECTIONS
+    ═══════════════════════════════════════════════════════ */
+    section {
+      padding: 80px 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--lavender);
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 48px;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       SERVICES SECTION
+    ═══════════════════════════════════════════════════════ */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--lavender);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .service-card:hover {
+      border-color: rgba(184, 160, 255, 0.4);
+      transform: translateY(-6px);
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-icon {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 20px;
+      opacity: 0.7;
+    }
+
+    .service-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    .service-desc {
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .service-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--lavender);
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+
+    .service-link:hover {
+      transform: translateX(4px);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       ABOUT SECTION
+    ═══════════════════════════════════════════════════════ */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 60px;
+      align-items: center;
+      padding: 80px 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin: 0 40px;
+    }
+
+    .about-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .about-body {
+      font-size: 15px;
+      color: var(--dim);
+      line-height: 1.9;
+    }
+
+    .about-body strong {
+      color: var(--bone);
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .about {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin: 0 20px;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FINAL CTA
+    ═══════════════════════════════════════════════════════ */
+    .final-cta {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 100px 40px;
+    }
+
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(123, 82, 200, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .final-cta h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(36px, 5vw, 52px);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .final-cta h2 em {
+      font-style: normal;
+      color: var(--lavender);
+    }
+
+    .final-cta p {
+      font-size: 16px;
+      color: var(--dim);
+      margin-bottom: 40px;
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      background: rgba(26, 23, 48, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--mist);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-email {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--lavender);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .footer-email:hover {
+      color: var(--bone);
+    }
+
+    @media (max-width: 768px) {
+      footer {
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 100px 24px 60px;
+      }
+
+      .cta-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      section {
+        padding: 60px 24px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--void);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="30" cy="30" r="27" stroke="#b8a0ff" stroke-width="1.2"/>
+      <path d="M30 6 C46 14,14 22,30 30 C46 38,14 46,30 54" stroke="#b8a0ff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <circle cx="30" cy="30" r="2.2" fill="#b8a0ff"/>
+      <circle cx="30" cy="30" r="5.5" stroke="#b8a0ff" stroke-width="0.6" stroke-dasharray="2 3"/>
+    </svg>
+    <span class="nav-logo-text">ophi<span class="x">x</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'});">Book a call</button>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-kicker">Now booking Q3 clients</div>
+    <h1>Content that moves<br>like <em>nothing</em> you've seen.</h1>
+    <p class="hero-sub">AI-powered video creative for brands that are done waiting 6 weeks and paying $10,000 for content that doesn't convert.</p>
+    <div class="cta-row">
+      <button class="btn btn-primary" onclick="window.location.href='https://calendly.com/hello/discovery';">Book a discovery call</button>
+      <button class="btn btn-ghost">View our work →</button>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">50<span>+</span></div>
+      <div class="stat-label">Brands served</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">300<span>+</span></div>
+      <div class="stat-label">Videos delivered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">48<span>hrs</span></div>
+      <div class="stat-label">Brief to final file</div>
+    </div>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section id="services">
+  <div class="section-label">// What we do</div>
+  <h2 class="section-title">Three offerings.<br>One standard.</h2>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 38 38" fill="none">
+        <rect x="1" y="1" width="36" height="36" rx="8" stroke="#b8a0ff" stroke-width="1.2"/>
+        <path d="M14 19 L19 14 L24 19 L19 24 Z" stroke="#b8a0ff" stroke-width="1.2" fill="none"/>
+        <circle cx="19" cy="19" r="3" fill="#b8a0ff" fill-opacity="0.4"/>
+      </svg>
+      <h3 class="service-name">AI Ad Creative</h3>
+      <p class="service-desc">UGC-style video ads that stop the scroll on Meta and TikTok. Multiple hooks, captions, music. Delivered in 48 hours.</p>
+      <a href="mailto:hello@ophix.studio" class="service-link">From $1,000/mo →</a>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 38 38" fill="none">
+        <rect x="1" y="1" width="36" height="36" rx="8" stroke="#b8a0ff" stroke-width="1.2"/>
+        <circle cx="19" cy="19" r="9" stroke="#b8a0ff" stroke-width="1.2"/>
+        <path d="M16 16 L23 19 L16 22 Z" fill="#b8a0ff" fill-opacity="0.7"/>
+      </svg>
+      <h3 class="service-name">Faceless YouTube</h3>
+      <p class="service-desc">Full channel management — scripting, AI production, SEO, publishing. A passive content machine built for your brand.</p>
+      <a href="mailto:hello@ophix.studio" class="service-link">From $1,500/mo →</a>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 38 38" fill="none">
+        <rect x="1" y="1" width="36" height="36" rx="8" stroke="#b8a0ff" stroke-width="1.2"/>
+        <path d="M8 26 L14 18 L19 22 L24 14 L30 26 Z" stroke="#b8a0ff" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+      </svg>
+      <h3 class="service-name">Brand Video</h3>
+      <p class="service-desc">Cinematic explainers, product demos, and brand films. AI-generated visuals, professional voiceover, original soundtrack.</p>
+      <a href="mailto:hello@ophix.studio" class="service-link">From $500 one-time →</a>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about">
+  <div class="about">
+    <div>
+      <div class="section-label">// Our origin</div>
+      <h2 class="about-title">Named after the sign they removed.</h2>
+    </div>
+    <div class="about-body">
+      Ophiuchus — the 13th zodiac sign — was deliberately erased from the calendar because it didn't fit the existing system. <strong>We built Ophix around that idea.</strong> The best work is often the kind the industry wasn't ready to acknowledge. We make AI video that's too precise, too fast, and too effective to ignore. If you've been told your creative budget needs to be bigger, your timeline longer, or your expectations lower — <strong>you've been talking to the wrong studio.</strong>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final-cta" id="contact">
+  <h2>Ready to be <em>seen?</em></h2>
+  <p>Discovery calls are 20 minutes. No pitch decks, no pressure. Just a conversation about what you need.</p>
+  <button class="btn btn-primary" onclick="window.location.href='https://calendly.com/hello/discovery';">Start a project</button>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-copy">© 2025 Ophix Creative Studio · Named after the 13th zodiac</div>
+  <a href="mailto:hello@ophix.studio" class="footer-email">hello@ophix.studio</a>
+</footer>
+
+<script>
+  // Smooth scroll for navigation links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Update Calendly URL with your calendar
+  // Replace 'hello' with your actual Calendly username
+</script>
+
+</body>
+</html>
