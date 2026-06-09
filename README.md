@@ -1,2 +1,0 @@
-# ophix.studio
-Website
