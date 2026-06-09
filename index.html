@@ -1,775 +1,797 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ophix — AI Creative Studio</title>
-  <meta name="description" content="AI-powered video creative for brands. UGC ads, YouTube channels, brand films. 48-hour turnarounds.">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    /* ═══════════════════════════════════════════════════════
-       TOKENS & RESET
-    ═══════════════════════════════════════════════════════ */
-    :root {
-      --void: #09090f;
-      --deep: #111022;
-      --surface: #1a1730;
-      --border: #2e2850;
-      --mist: #6b5f9e;
-      --lavender: #b8a0ff;
-      --dusk: #7b52c8;
-      --bone: #f0ece4;
-      --white: #fdfcff;
-      --dim: #8a80b0;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--void);
-      color: var(--bone);
-      font-family: 'Outfit', sans-serif;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* Grain overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    /* ═══════════════════════════════════════════════════════
-       NAVIGATION
-    ═══════════════════════════════════════════════════════ */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(9, 9, 15, 0.75);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(46, 40, 80, 0.3);
-      z-index: 1000;
-      animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .nav-logo svg {
-      width: 28px;
-      height: 28px;
-    }
-
-    .nav-logo-text {
-      font-family: 'Syne', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: var(--bone);
-    }
-
-    .nav-logo-text .x {
-      color: var(--lavender);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 40px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .nav-links a {
-      font-size: 13px;
-      color: var(--dim);
-      text-decoration: none;
-      transition: color 0.3s;
-      letter-spacing: 0.05em;
-    }
-
-    .nav-links a:hover {
-      color: var(--lavender);
-    }
-
-    .nav-cta {
-      font-family: 'Syne', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      background: var(--lavender);
-      color: var(--void);
-      border: none;
-      padding: 10px 24px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .nav-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(184, 160, 255, 0.2);
-    }
-
-    @media (max-width: 768px) {
-      nav {
-        padding: 16px 24px;
-      }
-      .nav-links {
-        display: none;
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════
-       HERO SECTION
-    ═══════════════════════════════════════════════════════ */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 120px 40px 80px;
-      position: relative;
-      overflow: hidden;
-      text-align: center;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -100px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 600px;
-      height: 400px;
-      background: radial-gradient(ellipse, rgba(123, 82, 200, 0.15) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 720px;
-      animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .hero-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--lavender);
-      border: 1px solid rgba(184, 160, 255, 0.25);
-      padding: 8px 16px;
-      border-radius: 99px;
-      margin-bottom: 28px;
-      background: rgba(184, 160, 255, 0.06);
-    }
-
-    .hero-kicker::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--lavender);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .hero h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(40px, 7vw, 64px);
-      font-weight: 800;
-      color: var(--white);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      color: var(--lavender);
-    }
-
-    .hero-sub {
-      font-size: 16px;
-      color: var(--dim);
-      line-height: 1.8;
-      margin-bottom: 40px;
-      font-weight: 300;
-    }
-
-    .cta-row {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 80px;
-    }
-
-    .btn {
-      font-family: 'Syne', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      padding: 14px 32px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: var(--lavender);
-      color: var(--void);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(184, 160, 255, 0.25);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--bone);
-      border: 1px solid var(--border);
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--lavender);
-      color: var(--lavender);
-      transform: translateY(-2px);
-    }
-
-    /* ═══════════════════════════════════════════════════════
-       STATS BAR
-    ═══════════════════════════════════════════════════════ */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      position: relative;
-      z-index: 1;
-    }
-
-    .stat {
-      padding: 32px 40px;
-      text-align: center;
-      border-right: 1px solid var(--border);
-    }
-
-    .stat:last-child {
-      border-right: none;
-    }
-
-    .stat-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 42px;
-      font-weight: 800;
-      color: var(--white);
-      letter-spacing: -0.02em;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .stat-num span {
-      color: var(--lavender);
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--dim);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 768px) {
-      .stats {
-        grid-template-columns: 1fr;
-      }
-      .stat {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        padding: 24px 20px;
-      }
-      .stat:last-child {
-        border-bottom: none;
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════
-       CONTENT SECTIONS
-    ═══════════════════════════════════════════════════════ */
-    section {
-      padding: 80px 40px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--lavender);
-      margin-bottom: 12px;
-      opacity: 0.8;
-    }
-
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 700;
-      color: var(--white);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 48px;
-    }
-
-    /* ═══════════════════════════════════════════════════════
-       SERVICES SECTION
-    ═══════════════════════════════════════════════════════ */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-top: 32px;
-    }
-
-    .service-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .service-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--lavender);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .service-card:hover {
-      border-color: rgba(184, 160, 255, 0.4);
-      transform: translateY(-6px);
-    }
-
-    .service-card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .service-icon {
-      width: 44px;
-      height: 44px;
-      margin-bottom: 20px;
-      opacity: 0.7;
-    }
-
-    .service-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: -0.01em;
-      margin-bottom: 12px;
-    }
-
-    .service-desc {
-      font-size: 14px;
-      color: var(--dim);
-      line-height: 1.7;
-      margin-bottom: 16px;
-    }
-
-    .service-link {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--lavender);
-      text-decoration: none;
-      transition: all 0.3s;
-      display: inline-block;
-    }
-
-    .service-link:hover {
-      transform: translateX(4px);
-    }
-
-    /* ═══════════════════════════════════════════════════════
-       ABOUT SECTION
-    ═══════════════════════════════════════════════════════ */
-    .about {
-      display: grid;
-      grid-template-columns: 1fr 1.5fr;
-      gap: 60px;
-      align-items: center;
-      padding: 80px 40px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      margin: 0 40px;
-    }
-
-    .about-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 20px;
-    }
-
-    .about-body {
-      font-size: 15px;
-      color: var(--dim);
-      line-height: 1.9;
-    }
-
-    .about-body strong {
-      color: var(--bone);
-      font-weight: 500;
-    }
-
-    @media (max-width: 768px) {
-      .about {
-        grid-template-columns: 1fr;
-        gap: 32px;
-        margin: 0 20px;
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════
-       FINAL CTA
-    ═══════════════════════════════════════════════════════ */
-    .final-cta {
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      padding: 100px 40px;
-    }
-
-    .final-cta::before {
-      content: '';
-      position: absolute;
-      bottom: -60px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 500px;
-      height: 300px;
-      background: radial-gradient(ellipse, rgba(123, 82, 200, 0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .final-cta h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(36px, 5vw, 52px);
-      font-weight: 800;
-      color: var(--white);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 16px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .final-cta h2 em {
-      font-style: normal;
-      color: var(--lavender);
-    }
-
-    .final-cta p {
-      font-size: 16px;
-      color: var(--dim);
-      margin-bottom: 40px;
-      font-weight: 300;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ═══════════════════════════════════════════════════════
-       FOOTER
-    ═══════════════════════════════════════════════════════ */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 40px;
-      background: rgba(26, 23, 48, 0.5);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .footer-copy {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--mist);
-      letter-spacing: 0.08em;
-    }
-
-    .footer-email {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--lavender);
-      text-decoration: none;
-      transition: all 0.3s;
-    }
-
-    .footer-email:hover {
-      color: var(--bone);
-    }
-
-    @media (max-width: 768px) {
-      footer {
-        justify-content: center;
-        text-align: center;
-        flex-direction: column;
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════════════════════════ */
-    @media (max-width: 768px) {
-      .hero {
-        padding: 100px 24px 60px;
-      }
-
-      .cta-row {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      section {
-        padding: 60px 24px;
-      }
-
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--void);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 3px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ophix Studio · Brad Schmidt · Creative Director & AI Ad Strategist</title>
+<meta name="description" content="Ophix Studio · the creative practice of Brad Schmidt. AI ad creative, copywriting & master prompting. Music as ShadowBuddy, outdoor film as Chill Vibes Outside. Available for consulting & freelance." />
+<meta property="og:type" content="profile" />
+<meta property="og:title" content="Ophix Studio · Brad Schmidt" />
+<meta property="og:description" content="Creative director & AI ad strategist. Decrypt the work." />
+<meta property="og:url" content="https://www.ophix.studio/" />
+<!-- <meta property="og:image" content="https://www.ophix.studio/share.jpg" /> -->
+
+<link rel="icon" href="brand/favicon/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" href="brand/favicon/favicon-32.png" sizes="32x32" />
+<link rel="apple-touch-icon" href="brand/favicon/apple-touch-icon-180.png" />
+
+<style>
+  @font-face{font-family:"Sora";src:url("brand/fonts/Sora-800.ttf") format("truetype");font-weight:800;font-style:normal;font-display:swap}
+  @font-face{font-family:"Space Mono";src:url("brand/fonts/SpaceMono-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:"Space Mono";src:url("brand/fonts/SpaceMono-Bold.ttf") format("truetype");font-weight:700;font-style:normal;font-display:swap}
+
+  :root{
+    --bg:#0C0716;
+    --panel:rgba(21,12,40,.62);
+    --panel-2:rgba(21,12,40,.80);
+    --line:rgba(124,58,237,.26);
+    --line-soft:rgba(124,58,237,.12);
+    --violet:#7C3AED;
+    --violet-2:#6D28D9;
+    --violet-soft:rgba(124,58,237,.16);
+    --green:#16F2A4;
+    --green-soft:rgba(22,242,164,.18);
+    --halo:#C4B5FD;
+    --light:#A78BFA;
+    --text:#F5F3FC;
+    --dim:rgba(245,243,252,.68);
+    --faint:rgba(245,243,252,.46);
+    --white:#F5F3FC;
+    --glow:0 0 16px rgba(124,58,237,.48);
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;background:var(--bg);max-width:100%;overflow-x:hidden}
+  body{
+    background:transparent;color:var(--text);
+    font-family:"Space Mono",ui-monospace,monospace;
+  font-size:16px;line-height:1.72;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;position:relative;letter-spacing:.01em;
+  }
+  ::selection{background:var(--violet);color:#06060a}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  /* ---- background layers ---- */
+  #matrix{position:fixed;inset:0;z-index:-3;display:block}
+  .overlay{position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 28%, rgba(12,7,22,.24), rgba(4,4,7,.78) 76%);}
+  .scan{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.5;
+    background:repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,.16) 3px);}
+  .grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+  @media (prefers-reduced-motion: reduce){ *{scroll-behavior:auto} }
+
+  /* ---- helpers ---- */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .bebas{font-family:"Sora",Impact,sans-serif;font-weight:800;letter-spacing:.03em}
+  .vi{color:var(--violet)}
+  .label{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);font-weight:700}
+  .dim{color:var(--dim)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  section{position:relative;padding:74px 0;border-top:1px solid var(--line-soft)}
+  .sec-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+    font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:30px}
+  .sec-head .l{color:var(--violet)}
+  .sec-head .r{color:var(--faint)}
+  h2.title{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(32px,4.8vw,62px);line-height:1.02;letter-spacing:.03em;color:var(--white)}
+  h2.title .vi{color:var(--light);text-shadow:0 0 9px rgba(124,58,237,.3)}
+
+  /* corner-bracket panel */
+  .panel{position:relative;background:var(--panel);border:1px solid var(--line);
+    backdrop-filter:blur(14px) saturate(130%);transition:border-color .35s,box-shadow .35s,transform .35s}
+  .panel::before,.panel::after{content:"";position:absolute;width:14px;height:14px;border:1px solid var(--violet);transition:opacity .35s}
+  .panel::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
+  .panel::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+  .panel:hover{border-color:var(--violet);box-shadow:0 0 0 1px var(--violet-soft),0 22px 60px rgba(124,58,237,.16)}
+
+  .term,.roleline,.sub,.what-card,.disc p,.disc ul,.work p,.copy p,.contact .lead,.tl p{
+    background:linear-gradient(135deg, rgba(245,243,252,.085), rgba(124,58,237,.045));
+    border:1px solid rgba(196,181,253,.16);
+    border-radius:8px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 44px rgba(0,0,0,.18);
+    backdrop-filter:blur(18px) saturate(145%);
+  }
+
+  /* ---- nav ---- */
+  header{position:fixed;top:0;left:0;right:0;z-index:60;transition:background .35s,border-color .35s;border-bottom:1px solid transparent}
+  header.on{background:rgba(12,7,22,.80);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;max-width:var(--maxw);margin:0 auto;padding:8px 28px}
+  .brand{display:flex;align-items:center;width:148px;min-width:148px}
+  .brand-logo{width:148px;height:auto;display:block}
+  .brand .gl{color:var(--violet);font-size:18px;text-shadow:var(--glow)}
+  .navlinks{display:flex;gap:20px;align-items:center}
+  .navlinks a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);position:relative;transition:color .25s}
+  .navlinks a:hover{color:var(--white)}
+  .navlinks a::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:1px;background:var(--violet);transition:width .3s;box-shadow:var(--glow)}
+  .navlinks a:hover::after{width:100%}
+  .btn{font-family:"Space Mono",monospace;border:1px solid var(--violet);color:var(--light);background:transparent;
+    padding:7px 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:.3s}
+  .btn:hover{background:var(--violet);color:#0C0716;box-shadow:0 0 22px rgba(124,58,237,.5)}
+  .tg{display:none;background:none;border:1px solid var(--line);color:var(--text);padding:8px 11px;font-family:inherit;font-size:11px;letter-spacing:.12em;cursor:pointer}
+
+  /* ---- hero ---- */
+  .hero{min-height:52svh;display:flex;align-items:flex-start;padding-top:70px;padding-bottom:20px;border-top:none}
+  .hero-inner{width:100%}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:42px;align-items:center;width:100%}
+  .hero-copy{min-width:0}
+  .term{font-size:12px;line-height:1.55;color:var(--dim);border-left:2px solid var(--violet);padding:10px 14px 10px 16px;margin-top:16px;max-width:46ch}
+  .term .ok{color:var(--violet)}
+  .term div{overflow-wrap:anywhere}
+  .term div{opacity:0;animation:boot .5s forwards}
+  .term div:nth-child(1){animation-delay:.15s}
+  .term div:nth-child(2){animation-delay:.6s}
+  .term div:nth-child(3){animation-delay:1.05s}
+  @keyframes boot{to{opacity:1}}
+  .cursor{display:inline-block;width:9px;height:15px;background:var(--violet);margin-left:4px;animation:bl 1s steps(1) infinite;box-shadow:var(--glow);vertical-align:middle}
+  @keyframes bl{50%{opacity:0}}
+  .hero-logo-title{margin:0}
+  .hero-mark{width:min(100%,520px);height:auto;filter:drop-shadow(0 0 22px rgba(124,58,237,.28))}
+  .roleline{max-width:54ch;color:var(--dim);font-size:14px;line-height:1.58;padding:14px 16px}
+  .roleline b{color:var(--text)}
+  .tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+  .tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);padding:6px 11px;white-space:nowrap}
+  .tag::before{content:"▸ ";color:var(--violet)}
+  .hero-cta{display:flex;gap:16px;margin-top:28px;flex-wrap:wrap;align-items:center}
+  .arrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);transition:.25s}
+  .arrow:hover{color:var(--violet)}
+
+  /* ---- reveal ---- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+  .stagger>*{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+  .stagger.in>*{opacity:1;transform:none}
+  .stagger.in>*:nth-child(2){transition-delay:.08s}
+  .stagger.in>*:nth-child(3){transition-delay:.16s}
+  .stagger.in>*:nth-child(4){transition-delay:.24s}
+
+  /* ---- statement ---- */
+  .statement{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(26px,3.6vw,48px);line-height:1.08;letter-spacing:.03em;color:var(--white);max-width:22ch}
+  .statement .vi{color:var(--light);text-shadow:0 0 9px rgba(124,58,237,.3)}
+  .sub{margin-top:18px;max-width:58ch;color:var(--dim);font-size:13.5px;line-height:1.6;padding:16px 18px}
+  .sub b{color:var(--text)}
+  .what-blocks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .what-card{padding:14px 15px;min-height:132px}
+  .what-card h3{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:14px;letter-spacing:.04em;color:var(--white);line-height:1.15}
+  .what-card p{margin-top:9px;color:var(--dim);font-size:12.5px;line-height:1.5}
+  .what-card .mini{display:block;margin-bottom:8px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
+  .about-trajectory{display:grid;gap:44px;align-items:start}
+  .about-copy,.trajectory{min-width:0}
+  .swipe-hint{display:none}
+
+  /* ---- disciplines ---- */
+  .disc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+  .disc{padding:30px 26px 34px}
+  .disc .top{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .disc .dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 10px currentColor}
+  .disc h3{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:22px;letter-spacing:.03em;color:var(--white);margin:20px 0 2px;line-height:1.12}
+  .disc .alias{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-bottom:14px}
+  .disc p{font-size:13px;color:var(--dim);line-height:1.58;padding:14px}
+  .disc ul{list-style:none;margin-top:14px;border-top:1px solid var(--line-soft);padding:14px}
+  .disc li{font-size:13px;color:var(--dim);padding:4px 0;display:flex;gap:9px}
+  .disc li::before{content:"›";color:var(--violet)}
+
+  /* ---- capabilities ---- */
+  .cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:46px}
+  .cap-col h4{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--violet);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .skills{display:flex;flex-wrap:wrap;gap:8px}
+  .skill{font-size:12.5px;border:1px solid var(--line);padding:7px 12px;color:var(--dim);transition:.3s}
+  .skill:hover{border-color:var(--green);color:var(--white);box-shadow:0 0 16px var(--green-soft)}
+  .stack-row{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line-soft);font-size:13.5px}
+  .stack-row span:first-child{color:var(--dim)}
+  .stack-row span:last-child{color:var(--violet);text-align:right;font-size:12px;letter-spacing:.04em}
+
+  /* ---- work ---- */
+  .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:16px;margin-top:42px;align-items:stretch}
+  .work{padding:24px;overflow:hidden;display:flex;flex-direction:column;min-height:250px}
+  .work.feat{grid-column:auto}
+  .work .kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
+  .work h3{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.4vw,34px);letter-spacing:.03em;color:var(--white);margin:14px 0 12px;line-height:1.08;max-width:28ch}
+  .work p{font-size:13px;color:var(--dim);max-width:58ch;line-height:1.58;padding:14px}
+  .work .meta{margin-top:auto;padding-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .work .meta span{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);border:1px solid var(--line);padding:5px 9px}
+
+  /* ---- media panels ---- */
+  .pnl{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin-top:46px}
+  .pnl.flip .media{order:2}
+  .copy h3{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(28px,3.7vw,48px);letter-spacing:.03em;color:var(--white);line-height:1.05}
+  .copy .alias{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-bottom:8px}
+  .copy p{color:var(--dim);font-size:13.5px;max-width:44ch;margin-top:12px;line-height:1.58;padding:14px 16px}
+  .frame{border:1px solid var(--line);overflow:hidden;background:#000;box-shadow:0 22px 56px rgba(0,0,0,.55)}
+  .frame iframe{display:block;width:100%;border:0}
+  .tracklist{list-style:none;margin-top:22px;border-top:1px solid var(--line)}
+  .tracklist a{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line-soft);transition:.3s;font-size:14px}
+  .tracklist a:hover{padding-left:9px;color:var(--violet)}
+  .tracklist .n{font-size:11px;color:var(--faint);width:24px}
+  .tracklist .t{flex:1}
+  .tracklist .y{font-size:11px;color:var(--faint)}
+  .plinks{display:flex;gap:18px;margin-top:24px;flex-wrap:wrap}
+  .plinks a{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);transition:.25s}
+  .plinks a:hover{color:var(--violet)}
+
+  .yt-card{position:relative;overflow:hidden;border:1px solid var(--line);padding:40px 32px;min-height:300px;
+    background:var(--panel);backdrop-filter:blur(3px);display:flex;flex-direction:column;justify-content:center;transition:.35s}
+  .yt-card:hover{border-color:var(--violet);box-shadow:0 22px 60px rgba(124,58,237,.18)}
+  .yt-play{width:56px;height:56px;border-radius:50%;border:1px solid var(--violet);color:var(--violet);
+    display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:22px;padding-left:3px;transition:.3s;box-shadow:0 0 18px rgba(177,108,255,.3)}
+  .yt-card:hover .yt-play{background:var(--violet);color:#0C0716}
+  .yt-name{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:28px;letter-spacing:.03em;color:var(--white);line-height:1.08}
+  .yt-sub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-top:8px}
+  .yt-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .yt-tags span{font-size:11px;border:1px solid var(--line);padding:5px 10px;color:var(--dim)}
+  .yt-cta{margin-top:24px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+
+  /* ---- timeline ---- */
+  .timeline{margin-top:46px;border-left:1px solid var(--line)}
+  .tl{display:grid;grid-template-columns:180px 1fr;gap:28px;padding:26px 0 26px 30px;border-bottom:1px solid var(--line-soft);position:relative}
+  .tl::before{content:"";position:absolute;left:-5px;top:32px;width:9px;height:9px;background:var(--bg);border:1px solid var(--violet);box-shadow:0 0 10px rgba(177,108,255,.6)}
+  .tl:hover::before{background:var(--violet)}
+  .tl .when{font-size:12px;letter-spacing:.06em;color:var(--violet)}
+  .tl .where{font-size:12px;color:var(--faint);margin-top:4px}
+  .tl h3{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:18px;letter-spacing:.03em;color:var(--white)}
+  .tl p{font-size:12.5px;color:var(--dim);margin-top:8px;max-width:52ch;line-height:1.52;padding:12px 14px}
+
+  /* ---- contact ---- */
+  .contact{text-align:center;padding:76px 0 68px}
+  .contact h2{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(34px,7vw,88px);line-height:1.02;letter-spacing:.03em;color:var(--white)}
+  .contact h2 .vi{color:var(--light);text-shadow:0 0 12px rgba(124,58,237,.34)}
+  .contact .lead{max-width:46ch;margin:18px auto 0;color:var(--dim);font-size:13.5px;line-height:1.55;padding:14px 16px}
+  .contact .email{display:inline-block;margin-top:36px;font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(20px,3vw,34px);letter-spacing:.03em;color:var(--white);border-bottom:1px solid var(--line);padding-bottom:6px;transition:.3s}
+  .contact .email:hover{color:var(--violet);border-color:var(--violet);text-shadow:var(--glow)}
+  .socials{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:42px}
+  .socials a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);padding:10px 15px;transition:.3s}
+  .socials a:hover{border-color:var(--violet);color:var(--light);box-shadow:0 0 16px rgba(124,58,237,.3)}
+
+  footer{border-top:1px solid var(--line);padding:32px 0}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  .foot a:hover{color:var(--violet)}
+
+  @media(min-width:881px){
+    nav{padding:8px 28px}
+    section{padding:54px 0}
+    .about-trajectory{grid-template-columns:minmax(0,.9fr) minmax(420px,1.1fr);gap:48px}
+    .about-trajectory .statement{font-size:clamp(36px,4vw,52px)}
+    .about-trajectory h2.title{font-size:clamp(36px,4.3vw,54px)}
+    .about-trajectory .timeline{margin-top:24px}
+    .about-trajectory .tl{grid-template-columns:118px 1fr;gap:18px;padding:17px 0 17px 24px}
+    .about-trajectory .tl h3{font-size:22px}
+    .about-trajectory .tl p{font-size:13px;line-height:1.62}
+    .hero{min-height:48svh;padding-top:68px;padding-bottom:18px}
+    .hero-grid{gap:34px}
+    .term{line-height:1.58;margin-top:14px}
+    .hero-mark{width:min(100%,500px)}
+    .roleline{margin-top:14px;line-height:1.52}
+    .tags{margin-top:18px}
+    .hero-copy .tags{flex-wrap:nowrap}
+    .hero-copy .tag{font-size:9.5px;padding:5px 7px}
+    .hero-cta{margin-top:24px}
+    .sec-head{margin-bottom:20px}
+    .sub{margin-top:16px;line-height:1.55}
+    .what-blocks{gap:10px;margin-top:12px}
+    .what-card{min-height:124px;padding:13px 14px}
+    .disc-grid,.work-grid{margin-top:32px}
+    .disc{padding:24px 22px 26px}
+    .disc h3{margin-top:14px}
+    .disc ul{margin-top:14px;padding-top:12px}
+    .cap-grid{gap:34px;margin-top:30px}
+    .cap-col h4{margin-bottom:14px;padding-bottom:10px}
+    .stack-row{padding:9px 0}
+    .work{padding:22px;min-height:244px}
+    .work h3{margin:10px 0 8px}
+    .work .meta{padding-top:14px}
+    .pnl{gap:34px;margin-top:30px}
+    .tracklist{margin-top:16px}
+    .tracklist a{padding:9px 0}
+    .frame iframe{max-height:360px}
+    .yt-card{min-height:250px;padding:30px 28px}
+    .timeline{margin-top:30px}
+    .tl{grid-template-columns:150px 1fr;gap:22px;padding:20px 0 20px 26px}
+    .contact{padding:58px 0 56px}
+    .contact .lead{margin-top:16px}
+    .contact .email{margin-top:26px}
+    .socials{margin-top:30px}
+    footer{padding:24px 0}
+  }
+
+  @media(max-width:880px){
+    nav{padding:8px 18px}
+    .navlinks{display:none}
+    .navlinks.open{display:flex;position:absolute;top:60px;right:18px;flex-direction:column;gap:18px;
+      background:rgba(9,8,14,.97);border:1px solid var(--line);padding:22px 26px;backdrop-filter:blur(12px)}
+    .tg{display:inline-flex}
+    .hero{overflow:hidden}
+    .brand,.brand-logo{width:124px;min-width:124px}
+    .hero{padding-top:86px}
+    .hero-grid{grid-template-columns:minmax(0,1fr);gap:34px;max-width:calc(100vw - 56px)}
+    .hero-grid>*{min-width:0;max-width:100%}
+    .hero-mark{width:100%;max-width:320px}
+    .term{max-width:100%;font-size:11px;overflow-wrap:anywhere}
+    .roleline,.tags,.hero-cta{width:100%;max-width:100%}
+    .roleline{font-size:14px;overflow-wrap:anywhere}
+    .statement{font-size:clamp(24px,7.5vw,32px);max-width:100%;overflow-wrap:anywhere}
+    .swipe-hint{display:block;margin:12px 0 0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+    .what-blocks,.timeline,.disc-grid,.cap-grid,.work-grid{
+      display:flex;
+      gap:12px;
+      margin-left:-28px;
+      margin-right:-28px;
+      padding:2px 28px 18px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      scroll-snap-type:x mandatory;
+      scroll-padding:28px;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .what-blocks::-webkit-scrollbar,.timeline::-webkit-scrollbar,.disc-grid::-webkit-scrollbar,.cap-grid::-webkit-scrollbar,.work-grid::-webkit-scrollbar{display:none}
+    .what-blocks>*,
+    .timeline>*,
+    .disc-grid>*,
+    .cap-grid>*,
+    .work-grid>*{
+      flex:0 0 min(82vw,330px);
+      scroll-snap-align:start;
+    }
+    .what-card{min-height:190px}
+    h2.title,.disc h3,.work h3,.copy h3,.contact h2{font-size-adjust:none;overflow-wrap:anywhere}
+    h2.title{font-size:clamp(26px,8vw,36px)}
+    .disc-grid,.cap-grid,.work-grid{grid-template-columns:none}
+    .cap-col{background:linear-gradient(135deg, rgba(245,243,252,.085), rgba(124,58,237,.045));border:1px solid rgba(196,181,253,.16);border-radius:8px;padding:16px;backdrop-filter:blur(18px) saturate(145%)}
+    .disc,.work{min-height:360px}
+    .work.feat{grid-column:auto}
+    .timeline{border-left:0;margin-top:20px}
+    .tl{border:1px solid rgba(196,181,253,.16);border-radius:8px;background:linear-gradient(135deg, rgba(245,243,252,.085), rgba(124,58,237,.045));backdrop-filter:blur(18px) saturate(145%);padding:18px}
+    .tl::before{display:none}
+    .pnl{grid-template-columns:1fr;gap:28px}
+    .pnl.flip .media{order:0}
+    .tl{grid-template-columns:1fr;gap:8px;padding-left:26px}
+    section{padding:58px 0}
+  }
+
+  @media print{
+    #matrix,.overlay,.scan,.grain,header,.hero-cta,.tg,.frame,.socials,.cursor,.term{display:none!important}
+    body{background:#fff;color:#111}
+    .vi,.label,.kicker,.alias,.when{color:#6d28d9!important;text-shadow:none!important}
+    h1,h2,h3,.title,.statement,.contact h2,.yt-name,.brand{color:#111!important}
+    a{color:#111!important}
+    .panel,.work,.frame,.yt-card{border-color:#ccc!important;background:#fff!important}
+    .reveal,.stagger>*{opacity:1!important;transform:none!important}
+    .hero{min-height:auto}
+  }
+</style>
 </head>
 <body>
+<canvas id="matrix"></canvas>
+<div class="overlay"></div>
+<div class="scan"></div>
+<div class="grain"></div>
 
-<!-- Navigation -->
-<nav>
-  <a href="#" class="nav-logo">
-    <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="30" cy="30" r="27" stroke="#b8a0ff" stroke-width="1.2"/>
-      <path d="M30 6 C46 14,14 22,30 30 C46 38,14 46,30 54" stroke="#b8a0ff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-      <circle cx="30" cy="30" r="2.2" fill="#b8a0ff"/>
-      <circle cx="30" cy="30" r="5.5" stroke="#b8a0ff" stroke-width="0.6" stroke-dasharray="2 3"/>
-    </svg>
-    <span class="nav-logo-text">ophi<span class="x">x</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'});">Book a call</button>
-</nav>
-
-<!-- Hero Section -->
-<section class="hero">
-  <div class="hero-content">
-    <div class="hero-kicker">Now booking Q3 clients</div>
-    <h1>Content that moves<br>like <em>nothing</em> you've seen.</h1>
-    <p class="hero-sub">AI-powered video creative for brands that are done waiting 6 weeks and paying $10,000 for content that doesn't convert.</p>
-    <div class="cta-row">
-      <button class="btn btn-primary" onclick="window.location.href='https://calendly.com/hello/discovery';">Book a discovery call</button>
-      <button class="btn btn-ghost">View our work →</button>
+<!-- ===== NAV ===== -->
+<header id="header">
+  <nav>
+    <a href="#top" class="brand" aria-label="OPHIX Studio">
+      <img class="brand-logo" src="brand/svg/ophix-logo-horizontal.svg" alt="OPHIX Studio" />
+    </a>
+    <div class="navlinks" id="navlinks">
+      <a href="#disciplines">Disciplines</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#work">Work</a>
+      <a href="#sound">Sound</a>
+      <a href="#outside">Outside</a>
+      <a href="#contact">Contact</a>
+      <button class="btn" onclick="window.print()">Decrypt PDF</button>
     </div>
-  </div>
+    <button class="tg" id="tg">MENU</button>
+  </nav>
+</header>
 
-  <!-- Stats Bar -->
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-num">50<span>+</span></div>
-      <div class="stat-label">Brands served</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">300<span>+</span></div>
-      <div class="stat-label">Videos delivered</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">48<span>hrs</span></div>
-      <div class="stat-label">Brief to final file</div>
-    </div>
-  </div>
-</section>
+<!-- ===== HERO ===== -->
+<section class="hero wrap" id="top">
+  <div class="hero-inner">
+    <div class="hero-grid">
+      <div>
+        <h1 class="hero-logo-title">
+          <img class="hero-mark" src="brand/svg/ophix-logo-horizontal.svg" alt="" />
+          <span class="sr-only">OPHIX STUDIO</span>
+        </h1>
+        <div class="term">
+          <div>&gt; ophix://studio · secure channel open</div>
+          <div>&gt; decrypting record .............. <span class="ok">ACCESS GRANTED</span></div>
+          <div>&gt; operator: brad schmidt<span class="cursor"></span></div>
+        </div>
+      </div>
 
-<!-- Services Section -->
-<section id="services">
-  <div class="section-label">// What we do</div>
-  <h2 class="section-title">Three offerings.<br>One standard.</h2>
-
-  <div class="services-grid">
-    <div class="service-card">
-      <svg class="service-icon" viewBox="0 0 38 38" fill="none">
-        <rect x="1" y="1" width="36" height="36" rx="8" stroke="#b8a0ff" stroke-width="1.2"/>
-        <path d="M14 19 L19 14 L24 19 L19 24 Z" stroke="#b8a0ff" stroke-width="1.2" fill="none"/>
-        <circle cx="19" cy="19" r="3" fill="#b8a0ff" fill-opacity="0.4"/>
-      </svg>
-      <h3 class="service-name">AI Ad Creative</h3>
-      <p class="service-desc">UGC-style video ads that stop the scroll on Meta and TikTok. Multiple hooks, captions, music. Delivered in 48 hours.</p>
-      <a href="mailto:hello@ophix.studio" class="service-link">From $1,000/mo →</a>
-    </div>
-
-    <div class="service-card">
-      <svg class="service-icon" viewBox="0 0 38 38" fill="none">
-        <rect x="1" y="1" width="36" height="36" rx="8" stroke="#b8a0ff" stroke-width="1.2"/>
-        <circle cx="19" cy="19" r="9" stroke="#b8a0ff" stroke-width="1.2"/>
-        <path d="M16 16 L23 19 L16 22 Z" fill="#b8a0ff" fill-opacity="0.7"/>
-      </svg>
-      <h3 class="service-name">Faceless YouTube</h3>
-      <p class="service-desc">Full channel management — scripting, AI production, SEO, publishing. A passive content machine built for your brand.</p>
-      <a href="mailto:hello@ophix.studio" class="service-link">From $1,500/mo →</a>
-    </div>
-
-    <div class="service-card">
-      <svg class="service-icon" viewBox="0 0 38 38" fill="none">
-        <rect x="1" y="1" width="36" height="36" rx="8" stroke="#b8a0ff" stroke-width="1.2"/>
-        <path d="M8 26 L14 18 L19 22 L24 14 L30 26 Z" stroke="#b8a0ff" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
-      </svg>
-      <h3 class="service-name">Brand Video</h3>
-      <p class="service-desc">Cinematic explainers, product demos, and brand films. AI-generated visuals, professional voiceover, original soundtrack.</p>
-      <a href="mailto:hello@ophix.studio" class="service-link">From $500 one-time →</a>
+      <div class="hero-copy">
+        <p class="roleline">
+          <b>Brad Schmidt</b> builds AI powered ad creative for brands that need sharper
+          hooks, faster testing, and cleaner conversion paths. Consulting and freelance.
+        </p>
+        <div class="tags">
+          <span class="tag">AI Ad Creative</span>
+          <span class="tag">Copywriting</span>
+          <span class="tag">Master Prompting</span>
+          <span class="tag">Music Production</span>
+          <span class="tag">Outdoor Film</span>
+        </div>
+        <div class="hero-cta">
+          <button class="btn" onclick="document.getElementById('contact').scrollIntoView()">Open a channel</button>
+          <a class="arrow" href="#work">› Decrypt the work</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- About Section -->
-<section id="about">
-  <div class="about">
-    <div>
-      <div class="section-label">// Our origin</div>
-      <h2 class="about-title">Named after the sign they removed.</h2>
+<!-- ===== WHAT I DO + TRAJECTORY ===== -->
+<section class="wrap about-trajectory" id="about">
+  <div class="about-copy">
+    <div class="sec-head"><span class="l">// 00 · What I do</span><span class="r">Capabilities decoded</span></div>
+    <p class="statement reveal">
+      Ad creative <span class="vi">engineered to convert</span>. Strategy, copy, AI production.
+    </p>
+    <p class="sub reveal">
+      I turn briefs into testable video ads: hooks, scripts, AI visuals, voiceover, and edit.
+      Built for Meta, TikTok, and fast creative iteration. Also producing music as
+      <b>ShadowBuddy</b> and outdoor film as <b>Chill Vibes Outside</b>.
+    </p>
+    <div class="swipe-hint">Swipe the blocks →</div>
+    <div class="what-blocks stagger">
+      <div class="what-card">
+        <span class="mini">Offer</span>
+        <h3>Ad creative built for testing</h3>
+        <p>Video concepts, hooks, UGC scripts, AI visuals, voiceover, edits, and variants ready for paid social.</p>
+      </div>
+      <div class="what-card">
+        <span class="mini">Process</span>
+        <h3>Brief to final file</h3>
+        <p>Decode the audience, find the angle, write the script, generate the assets, cut the ad, package the test.</p>
+      </div>
+      <div class="what-card">
+        <span class="mini">Systems</span>
+        <h3>Repeatable creative output</h3>
+        <p>Hook banks, prompt workflows, copy structures, and format templates so each round gets faster.</p>
+      </div>
+      <div class="what-card">
+        <span class="mini">Consulting</span>
+        <h3>Sharpen the creative machine</h3>
+        <p>Creative audits, AI workflow setup, messaging cleanup, offer positioning, and freelance production support.</p>
+      </div>
     </div>
-    <div class="about-body">
-      Ophiuchus — the 13th zodiac sign — was deliberately erased from the calendar because it didn't fit the existing system. <strong>We built Ophix around that idea.</strong> The best work is often the kind the industry wasn't ready to acknowledge. We make AI video that's too precise, too fast, and too effective to ignore. If you've been told your creative budget needs to be bigger, your timeline longer, or your expectations lower — <strong>you've been talking to the wrong studio.</strong>
+  </div>
+
+  <div class="trajectory" id="experience">
+    <div class="sec-head"><span class="l">// 06 · Trajectory</span><span class="r">The résumé bit</span></div>
+    <h2 class="title"><span class="decode">HOW I GOT</span> <span class="vi decode">HERE.</span></h2>
+    <div class="swipe-hint">Swipe the timeline →</div>
+
+    <div class="timeline stagger">
+      <div class="tl">
+        <div><div class="when">NOW</div><div class="where">Ophix Studio · Oregon</div></div>
+        <div>
+          <h3>Founder &amp; Creative Director, AI Ad Strategy</h3>
+          <p>UGC and animated video ads for performance brands. Strategy, copy, AI generation,
+             edit, and final files.</p>
+        </div>
+      </div>
+      <div class="tl">
+        <div><div class="when">CURRENT</div><div class="where">Hypergrowth Digital</div></div>
+        <div>
+          <h3>Retained Creative Partner</h3>
+          <p>Ongoing creative strategy and ready to run video assets for a growth agency.</p>
+        </div>
+      </div>
+      <div class="tl">
+        <div><div class="when">ONGOING</div><div class="where">ShadowBuddy · Chill Vibes Outside</div></div>
+        <div>
+          <h3>Independent Creator, Music &amp; Outdoor Film</h3>
+          <p>Electronic music and Oregon outdoor film. Audio, video, publishing, and growth.</p>
+        </div>
+      </div>
+      <div class="tl">
+        <div><div class="when">FOUNDATION</div><div class="where">Operations + self taught craft</div></div>
+        <div>
+          <h3>From Operator to Creative Strategist</h3>
+          <p>Operations background plus self taught advertising, copy, and AI production.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Final CTA -->
-<section class="final-cta" id="contact">
-  <h2>Ready to be <em>seen?</em></h2>
-  <p>Discovery calls are 20 minutes. No pitch decks, no pressure. Just a conversation about what you need.</p>
-  <button class="btn btn-primary" onclick="window.location.href='https://calendly.com/hello/discovery';">Start a project</button>
+<!-- ===== DISCIPLINES ===== -->
+<section class="wrap" id="disciplines">
+  <div class="sec-head"><span class="l">// 01 · Disciplines</span><span class="r">3 signals · 1 frequency</span></div>
+  <h2 class="title"><span class="decode">THREE SIGNALS,</span> <span class="vi decode">ONE FREQUENCY.</span></h2>
+  <div class="swipe-hint">Swipe disciplines →</div>
+
+  <div class="disc-grid stagger">
+    <div class="panel disc">
+      <div class="top"><span>01</span><span class="dot" style="color:var(--violet)"></span></div>
+      <h3>Creative Strategy &amp; AI Ad Production</h3>
+      <div class="alias">Ophix Studio</div>
+      <p>Concept, script, AI generation, and edit for Meta and TikTok ads.</p>
+      <ul>
+        <li>Creative direction</li>
+        <li>Direct response copy</li>
+        <li>AI video generation</li>
+        <li>Hook testing systems</li>
+      </ul>
+    </div>
+    <div class="panel disc">
+      <div class="top"><span>02</span><span class="dot" style="color:#C77DFF"></span></div>
+      <h3>Sound &amp; Music Production</h3>
+      <div class="alias">ShadowBuddy</div>
+      <p>Electronic production, sound design, and mix instincts for ads that feel timed.</p>
+      <ul>
+        <li>Original tracks</li>
+        <li>Sound design</li>
+        <li>Audio for video</li>
+        <li>SoundCloud releases</li>
+      </ul>
+    </div>
+    <div class="panel disc">
+      <div class="top"><span>03</span><span class="dot" style="color:#E04CC9"></span></div>
+      <h3>Outdoor Film &amp; YouTube</h3>
+      <div class="alias">Chill Vibes Outside</div>
+      <p>Oregon outdoor videos: fishing, foraging, bushcraft, camp cooking, and edits.</p>
+      <ul>
+        <li>Shooting</li>
+        <li>Short and long edits</li>
+        <li>YouTube growth</li>
+        <li>Outdoor storytelling</li>
+      </ul>
+    </div>
+  </div>
 </section>
 
-<!-- Footer -->
+<!-- ===== CAPABILITIES ===== -->
+<section class="wrap" id="capabilities">
+  <div class="sec-head"><span class="l">// 02 · Capabilities</span><span class="r">The toolkit</span></div>
+  <h2 class="title"><span class="decode">STRATEGIST'S HEAD,</span> <span class="vi decode">OPERATOR'S HANDS.</span></h2>
+  <div class="swipe-hint">Swipe toolkit →</div>
+
+  <div class="cap-grid">
+    <div class="cap-col reveal">
+      <h4>Craft &amp; strategy</h4>
+      <div class="skills">
+        <span class="skill">Creative direction</span>
+        <span class="skill">Ad strategy</span>
+        <span class="skill">Direct response copy</span>
+        <span class="skill">Hook frameworks</span>
+        <span class="skill">UGC scripting</span>
+        <span class="skill">Storyboarding</span>
+        <span class="skill">Master AI prompting</span>
+        <span class="skill">Brand voice</span>
+        <span class="skill">Conversion testing</span>
+        <span class="skill">Video editing</span>
+        <span class="skill">Music production</span>
+        <span class="skill">Sound design</span>
+        <span class="skill">Cinematography</span>
+        <span class="skill">YouTube growth</span>
+      </div>
+    </div>
+    <div class="cap-col reveal">
+      <h4>The stack</h4>
+      <div class="stack-row"><span>Strategy &amp; scripting</span><span>Claude · ChatGPT</span></div>
+      <div class="stack-row"><span>AI video generation</span><span>Veo · Kling · Higgsfield</span></div>
+      <div class="stack-row"><span>Character consistency</span><span>Nano Banana</span></div>
+      <div class="stack-row"><span>Voice &amp; audio</span><span>ElevenLabs</span></div>
+      <div class="stack-row"><span>Edit bay</span><span>CapCut</span></div>
+      <div class="stack-row"><span>Graphics &amp; design</span><span>Canva</span></div>
+      <div class="stack-row"><span>Music &amp; sound</span><span>DAW production</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORK ===== -->
+<section class="wrap" id="work">
+  <div class="sec-head"><span class="l">// 03 · Selected works in progress</span><span class="r">Live + in progress</span></div>
+  <h2 class="title"><span class="decode">SELECTED WORKS</span> <span class="vi decode">IN PROGRESS.</span></h2>
+  <div class="swipe-hint">Swipe selected work →</div>
+
+  <div class="work-grid stagger">
+    <div class="panel work feat">
+      <div class="kicker">Pet care · full ad creative buildout</div>
+      <h3>Ad creative engine for a pet care brand</h3>
+      <p>UGC, animated explainers, product breakdowns, and CGI infographics. Concept,
+         script, AI generation, voiceover, edit, and a steady testing pipeline.</p>
+      <div class="meta"><span>UGC</span><span>Animation</span><span>Science explainers</span><span>CGI</span><span>Scale</span></div>
+    </div>
+    <div class="panel work">
+      <div class="kicker">Longevity &amp; wellness · DR creative</div>
+      <h3>DR video ads for longevity</h3>
+      <p>Angle research, conversion scripts, AI visuals, and paid social edits.</p>
+      <div class="meta"><span>Copywriting</span><span>AI generation</span><span>Strategy</span></div>
+    </div>
+    <div class="panel work">
+      <div class="kicker">Insurance offices · creative + acquisition ops</div>
+      <h3>Insurance office growth support</h3>
+      <p>Lead focused creative, paid campaign setup, media buying, offer positioning,
+         social content, and account management.</p>
+      <div class="meta"><span>Paid social</span><span>Lead generation</span><span>Media buying</span><span>Social management</span></div>
+    </div>
+    <div class="panel work">
+      <div class="kicker">Reusable systems · In house IP</div>
+      <h3>Creative production systems</h3>
+      <p>Hook libraries, DR copy structures, and an AI production workflow for repeatable output.</p>
+      <div class="meta"><span>Systems</span><span>Copywriting</span><span>Pipeline</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOUND ===== -->
+<section class="wrap" id="sound">
+  <div class="sec-head"><span class="l">// 04 · Sound</span><span class="r">ShadowBuddy</span></div>
+  <div class="pnl">
+    <div class="copy reveal">
+      <div class="alias">@shadowbuddymusic</div>
+      <h3>SHADOWBUDDY</h3>
+      <p>Electronic, bass leaning production. Timing, tension, sound design, and mix feel.</p>
+      <ul class="tracklist">
+        <li><a href="https://soundcloud.com/shadow-buddy-768449657/like-paradise" target="_blank" rel="noopener"><span class="n">01</span><span class="t">Like Paradise</span><span class="y">2023</span></a></li>
+        <li><a href="https://soundcloud.com/shadow-buddy-768449657/phantom" target="_blank" rel="noopener"><span class="n">02</span><span class="t">Phantom</span><span class="y">2023</span></a></li>
+        <li><a href="https://soundcloud.com/shadow-buddy-768449657/feels-so-right" target="_blank" rel="noopener"><span class="n">03</span><span class="t">Feels So Right</span><span class="y">2023</span></a></li>
+        <li><a href="https://soundcloud.com/shadow-buddy-768449657/secrets" target="_blank" rel="noopener"><span class="n">04</span><span class="t">Secrets</span><span class="y">2023</span></a></li>
+        <li><a href="https://soundcloud.com/shadow-buddy-768449657/paradise" target="_blank" rel="noopener"><span class="n">05</span><span class="t">Paradise</span><span class="y">2022</span></a></li>
+      </ul>
+      <div class="plinks">
+        <a href="https://soundcloud.com/shadow-buddy-768449657" target="_blank" rel="noopener">SoundCloud ↗</a>
+        <a href="https://www.instagram.com/shadowbuddymusic/" target="_blank" rel="noopener">Instagram ↗</a>
+      </div>
+    </div>
+    <div class="media reveal">
+      <div class="frame">
+        <iframe height="420" scrolling="no" allow="autoplay" loading="lazy"
+          src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com%2Fshadow-buddy-768449657&color=%23a855f7&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OUTSIDE ===== -->
+<section class="wrap" id="outside">
+  <div class="sec-head"><span class="l">// 05 · Outside</span><span class="r">Chill Vibes Outside</span></div>
+  <div class="pnl flip">
+    <div class="media reveal">
+      <a class="yt-card" href="https://www.youtube.com/@chillvibesoutside" target="_blank" rel="noopener">
+        <div class="yt-play">▶</div>
+        <div class="yt-name">CHILL VIBES OUTSIDE</div>
+        <div class="yt-sub">@chillvibesoutside · Oregon, USA</div>
+        <div class="yt-tags"><span>Fishing</span><span>Foraging</span><span>Bushcraft</span><span>Camp cooking</span></div>
+        <div class="yt-cta">Watch on YouTube ↗</div>
+      </a>
+      <!-- Live player option: replace the yt-card block with
+           <div class="frame"><iframe height="300" allowfullscreen src="https://www.youtube.com/embed/YOUR_VIDEO_ID"></iframe></div>
+           (single video ID — channel/playlist embeds error out) -->
+    </div>
+    <div class="copy reveal">
+      <div class="alias">@chillvibesoutside</div>
+      <h3>CHILL VIBES OUTSIDE</h3>
+      <p>Oregon fishing, foraging, bushcraft, and camp cooking. Shot, edited, and grown solo.</p>
+      <div class="plinks">
+        <a href="https://www.youtube.com/@chillvibesoutside" target="_blank" rel="noopener">YouTube ↗</a>
+        <a href="https://www.instagram.com/chillvibesoutside/" target="_blank" rel="noopener">Instagram ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact wrap" id="contact">
+  <div class="label" style="margin-bottom:18px">// Available for consulting &amp; freelance</div>
+  <h2><span class="decode">LET'S MAKE SOMETHING</span> <span class="vi decode">WORTH SEEING.</span></h2>
+  <p class="lead">Need ad creative, copy, AI prompting, or sound? Send the brief. I’ll make it sharper.</p>
+  <a class="email" href="mailto:brad@ophix.studio">brad@ophix.studio</a>
+  <div class="socials">
+    <a href="https://soundcloud.com/shadow-buddy-768449657" target="_blank" rel="noopener">SoundCloud</a>
+    <a href="https://www.youtube.com/@chillvibesoutside" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.instagram.com/shadowbuddymusic/" target="_blank" rel="noopener">IG · Music</a>
+    <a href="https://www.instagram.com/chillvibesoutside/" target="_blank" rel="noopener">IG · Outdoors</a>
+    <a href="https://www.linkedin.com/in/brad-schmidt-b620b81b8/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="#" onclick="window.print();return false;">Download PDF</a>
+  </div>
+</section>
+
 <footer>
-  <div class="footer-copy">© 2025 Ophix Creative Studio · Named after the 13th zodiac</div>
-  <a href="mailto:hello@ophix.studio" class="footer-email">hello@ophix.studio</a>
+  <div class="wrap foot">
+    <span>© <span id="yr"></span> Ophix Studio · Brad Schmidt</span>
+    <a href="mailto:brad@ophix.studio">brad@ophix.studio</a>
+  </div>
 </footer>
 
 <script>
-  // Smooth scroll for navigation links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- violet + green matrix rain ---------- */
+  (function(){
+    const cvs = document.getElementById('matrix');
+    const ctx = cvs.getContext('2d');
+    let cols, drops, fs = 16;
+    const glyphs = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF#%@*+=<>{}/01OPHIXSTUDIO'.split('');
+    const rainColors = ['#16F2A4','#0FC77E','#A78BFA','#7C3AED','#4AE7B0'];
+    function resize(){
+      cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+      fs = window.innerWidth < 700 ? 13 : 16;
+      cols = Math.ceil(cvs.width / fs);
+      drops = Array.from({length: cols}, () => Math.random() * -60);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    let last = 0; const interval = 1000 / 26;
+    function draw(t){
+      requestAnimationFrame(draw);
+      if (t - last < interval) return;
+      last = t;
+      ctx.fillStyle = 'rgba(4,4,7,0.105)';
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+      ctx.font = fs + 'px "Space Mono", monospace';
+      for (let i = 0; i < cols; i++){
+        const ch = glyphs[(Math.random() * glyphs.length) | 0];
+        const x = i * fs, y = drops[i] * fs;
+        if (Math.random() > 0.968){
+          ctx.fillStyle = '#F5F3FC';
+          ctx.shadowColor = Math.random() > 0.5 ? '#16F2A4' : '#7C3AED';
+          ctx.shadowBlur = 9;
+        } else {
+          ctx.fillStyle = rainColors[(Math.random() * rainColors.length) | 0];
+          ctx.globalAlpha = Math.random() > 0.58 ? 0.8 : 0.42;
+          ctx.shadowBlur = 0;
+        }
+        ctx.fillText(ch, x, y);
+        ctx.globalAlpha = 1;
+        if (y > cvs.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
       }
-    });
-  });
+      ctx.shadowBlur = 0;
+    }
+    requestAnimationFrame(draw);
+  })();
 
-  // Update Calendly URL with your calendar
-  // Replace 'hello' with your actual Calendly username
+  /* ---------- decode / scramble text ---------- */
+  (function(){
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>';
+    function scramble(el){
+      const target = el.dataset.text;
+      const dur = 620; const start = performance.now();
+      function frame(now){
+        const p = Math.min((now - start) / dur, 1);
+        const reveal = Math.floor(p * target.length);
+        let out = '';
+        for (let i = 0; i < target.length; i++){
+          if (target[i] === ' ') { out += ' '; continue; }
+          out += i < reveal ? target[i] : chars[(Math.random()*chars.length)|0];
+        }
+        el.textContent = out;
+        if (p < 1) requestAnimationFrame(frame); else el.textContent = target;
+      }
+      requestAnimationFrame(frame);
+    }
+    const els = document.querySelectorAll('.decode');
+    els.forEach(el => { el.dataset.text = el.textContent; });
+    if (reduce){ els.forEach(el => el.textContent = el.dataset.text); return; }
+    // hero decodes immediately
+    document.querySelectorAll('.hero .decode').forEach((el,i)=> setTimeout(()=>scramble(el), 1700 + i*180));
+    const dio = new IntersectionObserver((ents)=>{
+      ents.forEach(e=>{ if(e.isIntersecting){ scramble(e.target); dio.unobserve(e.target); } });
+    },{threshold:.5});
+    document.querySelectorAll('section:not(.hero) .decode').forEach(el=>dio.observe(el));
+  })();
+
+  /* ---------- reveal on scroll ---------- */
+  const io = new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.14});
+  document.querySelectorAll('.reveal,.stagger').forEach(el=>io.observe(el));
+
+  /* ---------- nav ---------- */
+  const header = document.getElementById('header');
+  window.addEventListener('scroll',()=> header.classList.toggle('on', window.scrollY > 40));
+  const tg = document.getElementById('tg'), nl = document.getElementById('navlinks');
+  tg.addEventListener('click',()=> nl.classList.toggle('open'));
+  nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nl.classList.remove('open')));
 </script>
-
 </body>
 </html>
