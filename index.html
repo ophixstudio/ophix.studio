@@ -3,17 +3,34 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Ophix Studio · Brad Schmidt · Creative Director & AI Ad Strategist</title>
-<meta name="description" content="Ophix Studio · the creative practice of Brad Schmidt. AI ad creative, copywriting & master prompting. Music as ShadowBuddy, outdoor film as Chill Vibes Outside. Available for consulting & freelance." />
-<meta property="og:type" content="profile" />
-<meta property="og:title" content="Ophix Studio · Brad Schmidt" />
-<meta property="og:description" content="Creative director & AI ad strategist. Decrypt the work." />
-<meta property="og:url" content="https://www.ophix.studio/" />
-<!-- <meta property="og:image" content="https://www.ophix.studio/share.jpg" /> -->
+<title>Ophix Studio</title>
+<meta name="description" content="AI-Powered Creative Strategy, UGC Ads &amp; Performance Marketing" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="author" content="Ophix Studio" />
+<meta name="theme-color" content="#0C0716" />
+<link rel="canonical" href="https://ophix.studio" />
 
-<link rel="icon" href="brand/favicon/favicon.ico" sizes="any" />
-<link rel="icon" type="image/png" href="brand/favicon/favicon-32.png" sizes="32x32" />
-<link rel="apple-touch-icon" href="brand/favicon/apple-touch-icon-180.png" />
+<meta property="og:title" content="Ophix Studio" />
+<meta property="og:description" content="AI-Powered Creative Strategy, UGC Ads &amp; Performance Marketing" />
+<meta property="og:image" content="https://ophix.studio/og-image.jpg" />
+<meta property="og:image:secure_url" content="https://ophix.studio/og-image.jpg" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Ophix Studio - AI-Powered Creative Strategy, UGC Ads &amp; Performance Marketing" />
+<meta property="og:url" content="https://ophix.studio" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Ophix Studio" />
+<meta property="og:locale" content="en_US" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Ophix Studio" />
+<meta name="twitter:description" content="AI-Powered Creative Strategy, UGC Ads &amp; Performance Marketing" />
+<meta name="twitter:image" content="https://ophix.studio/og-image.jpg" />
+<meta name="twitter:image:alt" content="Ophix Studio - AI-Powered Creative Strategy, UGC Ads &amp; Performance Marketing" />
+
+<link rel="icon" type="image/png" href="https://ophix.studio/favicon.png" />
+<link rel="apple-touch-icon" href="https://ophix.studio/favicon.png" />
 
 <style>
   @font-face{font-family:"Sora";src:url("brand/fonts/Sora-800.ttf") format("truetype");font-weight:800;font-style:normal;font-display:swap}
@@ -110,30 +127,33 @@
   .btn{font-family:"Space Mono",monospace;border:1px solid var(--violet);color:var(--light);background:transparent;
     padding:7px 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:.3s}
   .btn:hover{background:var(--violet);color:#0C0716;box-shadow:0 0 22px rgba(124,58,237,.5)}
-  .tg{display:none;background:none;border:1px solid var(--line);color:var(--text);padding:8px 11px;font-family:inherit;font-size:11px;letter-spacing:.12em;cursor:pointer}
+  .mobile-actions{display:none;align-items:center;gap:8px}
+  .mobile-work,.tg{display:none;background:none;border:1px solid var(--line);color:var(--text);padding:8px 11px;font-family:inherit;font-size:11px;letter-spacing:.12em;cursor:pointer}
+  .mobile-work:hover,.tg:hover{border-color:var(--violet);color:var(--light)}
 
   /* ---- hero ---- */
   .hero{min-height:52svh;display:flex;align-items:flex-start;padding-top:70px;padding-bottom:20px;border-top:none}
   .hero-inner{width:100%}
-  .hero-grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:42px;align-items:center;width:100%}
+  .hero-grid{display:grid;grid-template-columns:minmax(560px,1.05fr) minmax(0,.95fr);gap:36px;align-items:start;width:100%}
   .hero-copy{min-width:0}
-  .term{font-size:12px;line-height:1.55;color:var(--dim);border-left:2px solid var(--violet);padding:10px 14px 10px 16px;margin-top:16px;max-width:46ch}
+  .term{font-size:11px;line-height:1.48;color:var(--dim);border-left:2px solid var(--violet);padding:10px 12px 10px 14px;margin-top:16px;width:min(100%,560px);max-width:560px}
   .term .ok{color:var(--violet)}
   .term div{overflow-wrap:anywhere}
-  .term div{opacity:0;animation:boot .5s forwards}
-  .term div:nth-child(1){animation-delay:.15s}
-  .term div:nth-child(2){animation-delay:.6s}
-  .term div:nth-child(3){animation-delay:1.05s}
+  .term div{opacity:1}
   @keyframes boot{to{opacity:1}}
   .cursor{display:inline-block;width:9px;height:15px;background:var(--violet);margin-left:4px;animation:bl 1s steps(1) infinite;box-shadow:var(--glow);vertical-align:middle}
   @keyframes bl{50%{opacity:0}}
+  .hero-signal{display:flex;flex-direction:column;align-items:flex-start}
   .hero-logo-title{margin:0}
-  .hero-mark{width:min(100%,520px);height:auto;filter:drop-shadow(0 0 22px rgba(124,58,237,.28))}
+  .hero-mark{width:min(100%,560px);height:auto;filter:drop-shadow(0 0 22px rgba(124,58,237,.28))}
   .roleline{max-width:54ch;color:var(--dim);font-size:14px;line-height:1.58;padding:14px 16px}
   .roleline b{color:var(--text)}
   .tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
   .tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);padding:6px 11px;white-space:nowrap}
   .tag::before{content:"▸ ";color:var(--violet)}
+  .hero-signal .tags{flex-direction:row;align-items:flex-start;justify-content:flex-start;margin-top:18px;width:min(100%,430px);gap:8px}
+  .hero-signal .tag{font-size:10px;padding:6px 10px}
+  .hero-signal .tag{width:max-content;max-width:100%}
   .hero-cta{display:flex;gap:16px;margin-top:28px;flex-wrap:wrap;align-items:center}
   .arrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);transition:.25s}
   .arrow:hover{color:var(--violet)}
@@ -245,7 +265,7 @@
   .socials a:hover{border-color:var(--violet);color:var(--light);box-shadow:0 0 16px rgba(124,58,237,.3)}
 
   footer{border-top:1px solid var(--line);padding:32px 0}
-  .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  .foot{display:flex;flex-direction:column;align-items:flex-start;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
   .foot a:hover{color:var(--violet)}
 
   @media(min-width:881px){
@@ -259,12 +279,12 @@
     .about-trajectory .tl h3{font-size:22px}
     .about-trajectory .tl p{font-size:13px;line-height:1.62}
     .hero{min-height:48svh;padding-top:68px;padding-bottom:18px}
-    .hero-grid{gap:34px}
-    .term{line-height:1.58;margin-top:14px}
-    .hero-mark{width:min(100%,500px)}
+    .hero-grid{grid-template-columns:minmax(680px,1fr) minmax(0,.95fr);gap:30px}
+    .term{line-height:1.58;margin-top:28px}
+    .hero-mark{width:min(100%,680px)}
     .roleline{margin-top:14px;line-height:1.52}
     .tags{margin-top:18px}
-    .hero-copy .tags{flex-wrap:nowrap}
+    .hero-copy .tags{flex-wrap:wrap}
     .hero-copy .tag{font-size:9.5px;padding:5px 7px}
     .hero-cta{margin-top:24px}
     .sec-head{margin-bottom:20px}
@@ -300,7 +320,8 @@
     .navlinks{display:none}
     .navlinks.open{display:flex;position:absolute;top:60px;right:18px;flex-direction:column;gap:18px;
       background:rgba(9,8,14,.97);border:1px solid var(--line);padding:22px 26px;backdrop-filter:blur(12px)}
-    .tg{display:inline-flex}
+    .mobile-actions{display:flex}
+    .mobile-work,.tg{display:inline-flex}
     .hero{overflow:hidden}
     .brand,.brand-logo{width:124px;min-width:124px}
     .hero{padding-top:86px}
@@ -377,13 +398,13 @@
     <div class="navlinks" id="navlinks">
       <a href="#disciplines">Disciplines</a>
       <a href="#capabilities">Capabilities</a>
-      <a href="#work">Work</a>
-      <a href="#sound">Sound</a>
-      <a href="#outside">Outside</a>
+      <a href="work.html">View Work</a>
       <a href="#contact">Contact</a>
-      <button class="btn" onclick="window.print()">Decrypt PDF</button>
     </div>
-    <button class="tg" id="tg">MENU</button>
+    <div class="mobile-actions">
+      <a class="mobile-work" href="work.html">WORK</a>
+      <button class="tg" id="tg">MENU</button>
+    </div>
   </nav>
 </header>
 
@@ -391,7 +412,7 @@
 <section class="hero wrap" id="top">
   <div class="hero-inner">
     <div class="hero-grid">
-      <div>
+      <div class="hero-signal">
         <h1 class="hero-logo-title">
           <img class="hero-mark" src="brand/svg/ophix-logo-horizontal.svg" alt="" />
           <span class="sr-only">OPHIX STUDIO</span>
@@ -401,23 +422,24 @@
           <div>&gt; decrypting record .............. <span class="ok">ACCESS GRANTED</span></div>
           <div>&gt; operator: brad schmidt<span class="cursor"></span></div>
         </div>
-      </div>
-
-      <div class="hero-copy">
-        <p class="roleline">
-          <b>Brad Schmidt</b> builds AI powered ad creative for brands that need sharper
-          hooks, faster testing, and cleaner conversion paths. Consulting and freelance.
-        </p>
         <div class="tags">
           <span class="tag">AI Ad Creative</span>
           <span class="tag">Copywriting</span>
           <span class="tag">Master Prompting</span>
-          <span class="tag">Music Production</span>
-          <span class="tag">Outdoor Film</span>
+          <span class="tag">Creative Systems</span>
+          <span class="tag">Paid Social</span>
         </div>
+      </div>
+
+      <div class="hero-copy">
+        <p class="roleline">
+          <b>OPHIX STUDIO</b> builds AI-powered ad creative for brands that need sharper
+          hooks, faster testing, and cleaner conversion paths. We combine strategy, copy,
+          and production to turn ideas into performance-driven campaigns that scale.
+        </p>
         <div class="hero-cta">
           <button class="btn" onclick="document.getElementById('contact').scrollIntoView()">Open a channel</button>
-          <a class="arrow" href="#work">› Decrypt the work</a>
+          <a class="arrow" href="work.html">› View our work</a>
         </div>
       </div>
     </div>
@@ -433,8 +455,7 @@
     </p>
     <p class="sub reveal">
       I turn briefs into testable video ads: hooks, scripts, AI visuals, voiceover, and edit.
-      Built for Meta, TikTok, and fast creative iteration. Also producing music as
-      <b>ShadowBuddy</b> and outdoor film as <b>Chill Vibes Outside</b>.
+      Built for Meta, TikTok, and fast creative iteration.
     </p>
     <div class="swipe-hint">Swipe the blocks →</div>
     <div class="what-blocks stagger">
@@ -483,10 +504,10 @@
         </div>
       </div>
       <div class="tl">
-        <div><div class="when">ONGOING</div><div class="where">ShadowBuddy · Chill Vibes Outside</div></div>
+        <div><div class="when">ONGOING</div><div class="where">Internal systems</div></div>
         <div>
-          <h3>Independent Creator, Music &amp; Outdoor Film</h3>
-          <p>Electronic music and Oregon outdoor film. Audio, video, publishing, and growth.</p>
+          <h3>Creative Systems Builder</h3>
+          <p>Hook banks, prompt workflows, edit templates, and repeatable production systems.</p>
         </div>
       </div>
       <div class="tl">
@@ -521,26 +542,26 @@
     </div>
     <div class="panel disc">
       <div class="top"><span>02</span><span class="dot" style="color:#C77DFF"></span></div>
-      <h3>Sound &amp; Music Production</h3>
-      <div class="alias">ShadowBuddy</div>
-      <p>Electronic production, sound design, and mix instincts for ads that feel timed.</p>
+      <h3>Conversion Copy &amp; Messaging</h3>
+      <div class="alias">Hooks, scripts, offers</div>
+      <p>Direct response writing that clarifies the offer, handles objections, and earns the next click.</p>
       <ul>
-        <li>Original tracks</li>
-        <li>Sound design</li>
-        <li>Audio for video</li>
-        <li>SoundCloud releases</li>
+        <li>Hook writing</li>
+        <li>UGC scripts</li>
+        <li>Offer positioning</li>
+        <li>Landing page angles</li>
       </ul>
     </div>
     <div class="panel disc">
       <div class="top"><span>03</span><span class="dot" style="color:#E04CC9"></span></div>
-      <h3>Outdoor Film &amp; YouTube</h3>
-      <div class="alias">Chill Vibes Outside</div>
-      <p>Oregon outdoor videos: fishing, foraging, bushcraft, camp cooking, and edits.</p>
+      <h3>Creative Systems &amp; Testing</h3>
+      <div class="alias">Repeatable output</div>
+      <p>Reusable workflows that help each creative round launch faster and teach the next round.</p>
       <ul>
-        <li>Shooting</li>
-        <li>Short and long edits</li>
-        <li>YouTube growth</li>
-        <li>Outdoor storytelling</li>
+        <li>Hook banks</li>
+        <li>Prompt systems</li>
+        <li>Variant planning</li>
+        <li>Testing notes</li>
       </ul>
     </div>
   </div>
@@ -566,10 +587,10 @@
         <span class="skill">Brand voice</span>
         <span class="skill">Conversion testing</span>
         <span class="skill">Video editing</span>
-        <span class="skill">Music production</span>
-        <span class="skill">Sound design</span>
-        <span class="skill">Cinematography</span>
-        <span class="skill">YouTube growth</span>
+        <span class="skill">Creative audits</span>
+        <span class="skill">Offer positioning</span>
+        <span class="skill">Production systems</span>
+        <span class="skill">Media buyer handoff</span>
       </div>
     </div>
     <div class="cap-col reveal">
@@ -580,7 +601,7 @@
       <div class="stack-row"><span>Voice &amp; audio</span><span>ElevenLabs</span></div>
       <div class="stack-row"><span>Edit bay</span><span>CapCut</span></div>
       <div class="stack-row"><span>Graphics &amp; design</span><span>Canva</span></div>
-      <div class="stack-row"><span>Music &amp; sound</span><span>DAW production</span></div>
+      <div class="stack-row"><span>Testing notes</span><span>Creative learnings</span></div>
     </div>
   </div>
 </section>
@@ -619,62 +640,9 @@
       <div class="meta"><span>Systems</span><span>Copywriting</span><span>Pipeline</span></div>
     </div>
   </div>
-</section>
-
-<!-- ===== SOUND ===== -->
-<section class="wrap" id="sound">
-  <div class="sec-head"><span class="l">// 04 · Sound</span><span class="r">ShadowBuddy</span></div>
-  <div class="pnl">
-    <div class="copy reveal">
-      <div class="alias">@shadowbuddymusic</div>
-      <h3>SHADOWBUDDY</h3>
-      <p>Electronic, bass leaning production. Timing, tension, sound design, and mix feel.</p>
-      <ul class="tracklist">
-        <li><a href="https://soundcloud.com/shadow-buddy-768449657/like-paradise" target="_blank" rel="noopener"><span class="n">01</span><span class="t">Like Paradise</span><span class="y">2023</span></a></li>
-        <li><a href="https://soundcloud.com/shadow-buddy-768449657/phantom" target="_blank" rel="noopener"><span class="n">02</span><span class="t">Phantom</span><span class="y">2023</span></a></li>
-        <li><a href="https://soundcloud.com/shadow-buddy-768449657/feels-so-right" target="_blank" rel="noopener"><span class="n">03</span><span class="t">Feels So Right</span><span class="y">2023</span></a></li>
-        <li><a href="https://soundcloud.com/shadow-buddy-768449657/secrets" target="_blank" rel="noopener"><span class="n">04</span><span class="t">Secrets</span><span class="y">2023</span></a></li>
-        <li><a href="https://soundcloud.com/shadow-buddy-768449657/paradise" target="_blank" rel="noopener"><span class="n">05</span><span class="t">Paradise</span><span class="y">2022</span></a></li>
-      </ul>
-      <div class="plinks">
-        <a href="https://soundcloud.com/shadow-buddy-768449657" target="_blank" rel="noopener">SoundCloud ↗</a>
-        <a href="https://www.instagram.com/shadowbuddymusic/" target="_blank" rel="noopener">Instagram ↗</a>
-      </div>
-    </div>
-    <div class="media reveal">
-      <div class="frame">
-        <iframe height="420" scrolling="no" allow="autoplay" loading="lazy"
-          src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com%2Fshadow-buddy-768449657&color=%23a855f7&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== OUTSIDE ===== -->
-<section class="wrap" id="outside">
-  <div class="sec-head"><span class="l">// 05 · Outside</span><span class="r">Chill Vibes Outside</span></div>
-  <div class="pnl flip">
-    <div class="media reveal">
-      <a class="yt-card" href="https://www.youtube.com/@chillvibesoutside" target="_blank" rel="noopener">
-        <div class="yt-play">▶</div>
-        <div class="yt-name">CHILL VIBES OUTSIDE</div>
-        <div class="yt-sub">@chillvibesoutside · Oregon, USA</div>
-        <div class="yt-tags"><span>Fishing</span><span>Foraging</span><span>Bushcraft</span><span>Camp cooking</span></div>
-        <div class="yt-cta">Watch on YouTube ↗</div>
-      </a>
-      <!-- Live player option: replace the yt-card block with
-           <div class="frame"><iframe height="300" allowfullscreen src="https://www.youtube.com/embed/YOUR_VIDEO_ID"></iframe></div>
-           (single video ID — channel/playlist embeds error out) -->
-    </div>
-    <div class="copy reveal">
-      <div class="alias">@chillvibesoutside</div>
-      <h3>CHILL VIBES OUTSIDE</h3>
-      <p>Oregon fishing, foraging, bushcraft, and camp cooking. Shot, edited, and grown solo.</p>
-      <div class="plinks">
-        <a href="https://www.youtube.com/@chillvibesoutside" target="_blank" rel="noopener">YouTube ↗</a>
-        <a href="https://www.instagram.com/chillvibesoutside/" target="_blank" rel="noopener">Instagram ↗</a>
-      </div>
-    </div>
+  <div class="hero-cta" style="margin-top:26px">
+    <a class="btn" href="work.html">View full work page</a>
+    <a class="arrow" href="mailto:brad@ophix.studio">› Send a brief</a>
   </div>
 </section>
 
@@ -682,21 +650,20 @@
 <section class="contact wrap" id="contact">
   <div class="label" style="margin-bottom:18px">// Available for consulting &amp; freelance</div>
   <h2><span class="decode">LET'S MAKE SOMETHING</span> <span class="vi decode">WORTH SEEING.</span></h2>
-  <p class="lead">Need ad creative, copy, AI prompting, or sound? Send the brief. I’ll make it sharper.</p>
+  <p class="lead">Need ad creative, copy, AI prompting, or production systems? Send the brief. I’ll make it sharper.</p>
   <a class="email" href="mailto:brad@ophix.studio">brad@ophix.studio</a>
   <div class="socials">
-    <a href="https://soundcloud.com/shadow-buddy-768449657" target="_blank" rel="noopener">SoundCloud</a>
-    <a href="https://www.youtube.com/@chillvibesoutside" target="_blank" rel="noopener">YouTube</a>
-    <a href="https://www.instagram.com/shadowbuddymusic/" target="_blank" rel="noopener">IG · Music</a>
-    <a href="https://www.instagram.com/chillvibesoutside/" target="_blank" rel="noopener">IG · Outdoors</a>
     <a href="https://www.linkedin.com/in/brad-schmidt-b620b81b8/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="work.html">View Work</a>
     <a href="#" onclick="window.print();return false;">Download PDF</a>
   </div>
 </section>
 
 <footer>
   <div class="wrap foot">
-    <span>© <span id="yr"></span> Ophix Studio · Brad Schmidt</span>
+    <span>© <span id="yr"></span> Ophix Studio</span>
+    <span>Brad Schmidt</span>
+    <span>Creative direction and AI ad strategy</span>
     <a href="mailto:brad@ophix.studio">brad@ophix.studio</a>
   </div>
 </footer>
