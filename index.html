@@ -93,7 +93,7 @@
     font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:30px}
   .sec-head .l{color:var(--violet)}
   .sec-head .r{color:var(--faint)}
-  h2.title{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(32px,4.8vw,62px);line-height:1.02;letter-spacing:.03em;color:var(--white)}
+  h2.title{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(30px,4.2vw,54px);line-height:1.02;letter-spacing:.03em;color:var(--white)}
   h2.title .vi{color:var(--light);text-shadow:0 0 9px rgba(124,58,237,.3)}
 
   /* corner-bracket panel */
@@ -104,7 +104,7 @@
   .panel::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
   .panel:hover{border-color:var(--violet);box-shadow:0 0 0 1px var(--violet-soft),0 22px 60px rgba(124,58,237,.16)}
 
-  .term,.roleline,.sub,.what-card,.disc p,.disc ul,.work p,.copy p,.contact .lead,.tl p{
+  .term,.roleline,.sub,.what-card,.fit-card,.disc p,.disc ul,.work p,.copy p,.contact .lead,.tl p{
     background:linear-gradient(135deg, rgba(245,243,252,.085), rgba(124,58,237,.045));
     border:1px solid rgba(196,181,253,.16);
     border-radius:8px;
@@ -121,6 +121,7 @@
   .brand .gl{color:var(--violet);font-size:18px;text-shadow:var(--glow)}
   .navlinks{display:flex;gap:20px;align-items:center}
   .navlinks a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);position:relative;transition:color .25s}
+  .navlinks a.nav-work{border:1px solid var(--line);padding:7px 10px;color:var(--light)}
   .navlinks a:hover{color:var(--white)}
   .navlinks a::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:1px;background:var(--violet);transition:width .3s;box-shadow:var(--glow)}
   .navlinks a:hover::after{width:100%}
@@ -180,6 +181,12 @@
   .about-trajectory{display:grid;gap:44px;align-items:start}
   .about-copy,.trajectory{min-width:0}
   .swipe-hint{display:none}
+  .swipe-dots{display:none}
+  .fit-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:28px}
+  .fit-card{padding:16px;min-height:156px}
+  .fit-card .mini{display:block;margin-bottom:10px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
+  .fit-card h3{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:15px;line-height:1.12;color:var(--white)}
+  .fit-card p{margin-top:9px;color:var(--dim);font-size:12.5px;line-height:1.48}
 
   /* ---- disciplines ---- */
   .disc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
@@ -255,7 +262,7 @@
 
   /* ---- contact ---- */
   .contact{text-align:center;padding:76px 0 68px}
-  .contact h2{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(34px,7vw,88px);line-height:1.02;letter-spacing:.03em;color:var(--white)}
+  .contact h2{font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(32px,5.8vw,70px);line-height:1.02;letter-spacing:.03em;color:var(--white)}
   .contact h2 .vi{color:var(--light);text-shadow:0 0 12px rgba(124,58,237,.34)}
   .contact .lead{max-width:46ch;margin:18px auto 0;color:var(--dim);font-size:13.5px;line-height:1.55;padding:14px 16px}
   .contact .email{display:inline-block;margin-top:36px;font-family:"Sora",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(20px,3vw,34px);letter-spacing:.03em;color:var(--white);border-bottom:1px solid var(--line);padding-bottom:6px;transition:.3s}
@@ -273,7 +280,7 @@
     section{padding:54px 0}
     .about-trajectory{grid-template-columns:minmax(0,.9fr) minmax(420px,1.1fr);gap:48px;padding-top:26px}
     .about-trajectory .statement{font-size:clamp(36px,4vw,52px)}
-    .about-trajectory h2.title{font-size:clamp(36px,4.3vw,54px)}
+    .about-trajectory h2.title{font-size:clamp(34px,4vw,48px)}
     .about-trajectory .timeline{margin-top:24px}
     .about-trajectory .tl{grid-template-columns:118px 1fr;gap:18px;padding:17px 0 17px 24px}
     .about-trajectory .tl h3{font-size:22px}
@@ -316,6 +323,8 @@
   }
 
   @media(max-width:880px){
+    html,body{width:100%;max-width:100%;overflow-x:hidden}
+    .wrap{width:100%;max-width:100%;padding-left:20px;padding-right:20px}
     nav{padding:8px 18px}
     .navlinks{display:none}
     .navlinks.open{display:flex;position:absolute;top:60px;right:18px;flex-direction:column;gap:18px;
@@ -325,40 +334,47 @@
     .hero{overflow:hidden}
     .brand,.brand-logo{width:124px;min-width:124px}
     .hero{padding-top:86px}
-    .hero-grid{grid-template-columns:minmax(0,1fr);gap:34px;max-width:calc(100vw - 56px)}
+    .hero-grid{grid-template-columns:minmax(0,1fr);gap:34px;width:100%;max-width:100%}
     .hero-grid>*{min-width:0;max-width:100%}
+    .hero-inner,.hero-grid,.hero-signal,.hero-copy{width:calc(100vw - 40px);max-width:calc(100vw - 40px);overflow:hidden}
     .hero-mark{width:100%;max-width:320px}
-    .term{max-width:100%;font-size:11px;overflow-wrap:anywhere}
-    .roleline,.tags,.hero-cta{width:100%;max-width:100%}
-    .roleline{font-size:14px;overflow-wrap:anywhere}
-    .statement{font-size:clamp(24px,7.5vw,32px);max-width:100%;overflow-wrap:anywhere}
+    .term{width:100%;max-width:100%;font-size:11px;overflow-wrap:anywhere}
+    .hero-signal .tags{width:100%;max-width:100%;gap:7px}
+    .hero-signal .tag{font-size:9px;padding:5px 7px;white-space:normal}
+    .roleline,.tags,.hero-cta{width:100%;max-width:calc(100vw - 40px)}
+    .roleline{font-size:14px;overflow-wrap:break-word}
+    .statement{font-size:30px;line-height:1.1;max-width:100%;overflow-wrap:break-word}
     .swipe-hint{display:block;margin:12px 0 0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
-    .what-blocks,.timeline,.disc-grid,.cap-grid,.work-grid{
+    .what-blocks,.timeline,.fit-grid,.disc-grid,.cap-grid,.work-grid{
       display:flex;
       gap:12px;
-      margin-left:-28px;
-      margin-right:-28px;
-      padding:2px 28px 18px;
+      margin-left:-20px;
+      margin-right:-20px;
+      padding:2px 20px 18px;
       overflow-x:auto;
       overflow-y:hidden;
       scroll-snap-type:x mandatory;
-      scroll-padding:28px;
+      scroll-padding:20px;
       -webkit-overflow-scrolling:touch;
       scrollbar-width:none;
     }
-    .what-blocks::-webkit-scrollbar,.timeline::-webkit-scrollbar,.disc-grid::-webkit-scrollbar,.cap-grid::-webkit-scrollbar,.work-grid::-webkit-scrollbar{display:none}
+    .what-blocks::-webkit-scrollbar,.timeline::-webkit-scrollbar,.fit-grid::-webkit-scrollbar,.disc-grid::-webkit-scrollbar,.cap-grid::-webkit-scrollbar,.work-grid::-webkit-scrollbar{display:none}
     .what-blocks>*,
     .timeline>*,
+    .fit-grid>*,
     .disc-grid>*,
     .cap-grid>*,
     .work-grid>*{
       flex:0 0 min(82vw,330px);
       scroll-snap-align:start;
     }
+    .swipe-dots{display:flex;gap:6px;margin-top:6px}
+    .swipe-dots span{width:18px;height:2px;background:var(--line);display:block}
+    .swipe-dots span:first-child{background:var(--violet);box-shadow:var(--glow)}
     .what-card{min-height:190px}
     h2.title,.disc h3,.work h3,.copy h3,.contact h2{font-size-adjust:none;overflow-wrap:anywhere}
     h2.title{font-size:clamp(26px,8vw,36px)}
-    .disc-grid,.cap-grid,.work-grid{grid-template-columns:none}
+    .fit-grid,.disc-grid,.cap-grid,.work-grid{grid-template-columns:none}
     .cap-col{background:linear-gradient(135deg, rgba(245,243,252,.085), rgba(124,58,237,.045));border:1px solid rgba(196,181,253,.16);border-radius:8px;padding:16px;backdrop-filter:blur(18px) saturate(145%)}
     .disc,.work{min-height:360px}
     .work.feat{grid-column:auto}
@@ -398,7 +414,7 @@
     <div class="navlinks" id="navlinks">
       <a href="#disciplines">Disciplines</a>
       <a href="#capabilities">Capabilities</a>
-      <a href="work.html">View Work</a>
+      <a class="nav-work" href="work.html">View Work</a>
       <a href="#contact">Contact</a>
     </div>
     <div class="mobile-actions">
@@ -438,8 +454,8 @@
           and production to turn ideas into performance-driven campaigns that scale.
         </p>
         <div class="hero-cta">
-          <button class="btn" onclick="document.getElementById('contact').scrollIntoView()">Open a channel</button>
-          <a class="arrow" href="work.html">› View our work</a>
+          <button class="btn" onclick="document.getElementById('contact').scrollIntoView()">Start a project</button>
+          <a class="btn" href="work.html">View Work</a>
         </div>
       </div>
     </div>
@@ -458,6 +474,7 @@
       Built for Meta, TikTok, and fast creative iteration.
     </p>
     <div class="swipe-hint">Swipe the blocks →</div>
+    <div class="swipe-dots" aria-hidden="true"><span></span><span></span><span></span></div>
     <div class="what-blocks stagger">
       <div class="what-card">
         <span class="mini">Offer</span>
@@ -483,9 +500,10 @@
   </div>
 
   <div class="trajectory" id="experience">
-    <div class="sec-head"><span class="l">// 06 · Trajectory</span><span class="r">The résumé bit</span></div>
+    <div class="sec-head"><span class="l">// 06 · Creative background</span><span class="r">Why this works</span></div>
     <h2 class="title"><span class="decode">HOW I GOT</span> <span class="vi decode">HERE.</span></h2>
     <div class="swipe-hint">Swipe the timeline →</div>
+    <div class="swipe-dots" aria-hidden="true"><span></span><span></span><span></span></div>
 
     <div class="timeline stagger">
       <div class="tl">
@@ -521,11 +539,47 @@
   </div>
 </section>
 
+<!-- ===== WHO THIS IS FOR ===== -->
+<section class="wrap" id="fit">
+  <div class="sec-head"><span class="l">// 01 · Who this is for</span><span class="r">Best-fit clients</span></div>
+  <h2 class="title"><span class="decode">BUILT FOR TEAMS</span> <span class="vi decode">THAT NEED MORE CREATIVE.</span></h2>
+  <div class="swipe-hint">Swipe client fits →</div>
+  <div class="swipe-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="fit-grid stagger">
+    <div class="fit-card">
+      <span class="mini">Growth teams</span>
+      <h3>More tests without more drag</h3>
+      <p>Fresh hooks, scripts, edits, and variant systems for teams feeding paid social.</p>
+    </div>
+    <div class="fit-card">
+      <span class="mini">Agencies</span>
+      <h3>A creative partner behind the curtain</h3>
+      <p>Retained concepting, copy, AI production, and final assets for client campaigns.</p>
+    </div>
+    <div class="fit-card">
+      <span class="mini">Founder-led brands</span>
+      <h3>Sharper offer and message</h3>
+      <p>Translate the product into angles people understand quickly and act on.</p>
+    </div>
+    <div class="fit-card">
+      <span class="mini">Consumer brands</span>
+      <h3>Social-first ad creative</h3>
+      <p>UGC-style scripts, product explainers, visual demos, and platform-ready edits.</p>
+    </div>
+    <div class="fit-card">
+      <span class="mini">AI-curious teams</span>
+      <h3>Faster output with taste control</h3>
+      <p>Prompt workflows and creative systems that increase speed without making the brand feel generic.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ===== DISCIPLINES ===== -->
 <section class="wrap" id="disciplines">
-  <div class="sec-head"><span class="l">// 01 · Disciplines</span><span class="r">3 signals · 1 frequency</span></div>
+  <div class="sec-head"><span class="l">// 02 · Disciplines</span><span class="r">3 signals · 1 frequency</span></div>
   <h2 class="title"><span class="decode">THREE SIGNALS,</span> <span class="vi decode">ONE FREQUENCY.</span></h2>
   <div class="swipe-hint">Swipe disciplines →</div>
+  <div class="swipe-dots" aria-hidden="true"><span></span><span></span><span></span></div>
 
   <div class="disc-grid stagger">
     <div class="panel disc">
@@ -569,9 +623,10 @@
 
 <!-- ===== CAPABILITIES ===== -->
 <section class="wrap" id="capabilities">
-  <div class="sec-head"><span class="l">// 02 · Capabilities</span><span class="r">The toolkit</span></div>
+  <div class="sec-head"><span class="l">// 03 · Capabilities</span><span class="r">The toolkit</span></div>
   <h2 class="title"><span class="decode">STRATEGIST'S HEAD,</span> <span class="vi decode">OPERATOR'S HANDS.</span></h2>
   <div class="swipe-hint">Swipe toolkit →</div>
+  <div class="swipe-dots" aria-hidden="true"><span></span><span></span><span></span></div>
 
   <div class="cap-grid">
     <div class="cap-col reveal">
@@ -608,9 +663,10 @@
 
 <!-- ===== WORK ===== -->
 <section class="wrap" id="work">
-  <div class="sec-head"><span class="l">// 03 · Selected works in progress</span><span class="r">Live + in progress</span></div>
+  <div class="sec-head"><span class="l">// 04 · Selected works in progress</span><span class="r">Live + in progress</span></div>
   <h2 class="title"><span class="decode">SELECTED WORKS</span> <span class="vi decode">IN PROGRESS.</span></h2>
   <div class="swipe-hint">Swipe selected work →</div>
+  <div class="swipe-dots" aria-hidden="true"><span></span><span></span><span></span></div>
 
   <div class="work-grid stagger">
     <div class="panel work feat">
@@ -641,21 +697,20 @@
     </div>
   </div>
   <div class="hero-cta" style="margin-top:26px">
-    <a class="btn" href="work.html">View full work page</a>
+    <a class="btn" href="work.html">View Work</a>
     <a class="arrow" href="mailto:brad@ophix.studio">› Send a brief</a>
   </div>
 </section>
 
 <!-- ===== CONTACT ===== -->
 <section class="contact wrap" id="contact">
-  <div class="label" style="margin-bottom:18px">// Available for consulting &amp; freelance</div>
-  <h2><span class="decode">LET'S MAKE SOMETHING</span> <span class="vi decode">WORTH SEEING.</span></h2>
-  <p class="lead">Need ad creative, copy, AI prompting, or production systems? Send the brief. I’ll make it sharper.</p>
+  <div class="label" style="margin-bottom:18px">// Start a project</div>
+  <h2><span class="decode">HAVE A BRIEF THAT</span> <span class="vi decode">NEEDS BETTER CREATIVE?</span></h2>
+  <p class="lead">Send the product, offer, audience, and goal. I’ll help turn it into creative people can understand, test, and act on.</p>
   <a class="email" href="mailto:brad@ophix.studio">brad@ophix.studio</a>
   <div class="socials">
     <a href="https://www.linkedin.com/in/brad-schmidt-b620b81b8/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="work.html">View Work</a>
-    <a href="#" onclick="window.print();return false;">Download PDF</a>
   </div>
 </section>
 
