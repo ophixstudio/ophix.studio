@@ -142,3 +142,7 @@ Security notes:
 - It does not collect or store bank account or routing numbers.
 - Real ACH should be handled by a dedicated provider such as Dwolla, Moov, Stripe Financial Connections, or another compliant payment provider.
 - The site should store provider IDs, payment statuses, and webhook events only.
+
+## Crucible Forge Floor Prototype
+
+`station/` holds the Crucible Forge Floor: a pixel-art virtual ad studio where a crew of AI agents takes a brief from recon to a Gate-checked ad plan. It's a dry run only (no media, no uploads, shipping sealed), `noindex`, and not linked from the site. See `station/README.md`.

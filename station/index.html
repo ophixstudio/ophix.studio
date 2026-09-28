@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Crucible Forge Floor</title>
+<meta name="description" content="A virtual Crucible: a pixel-art ad studio where a crew of AI agents takes a brief from recon to a Gate-checked ad plan. Dry-run build, shipping sealed." />
+<link rel="icon" type="image/png" href="../favicon.png" />
+<link rel="stylesheet" href="station.css" />
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="glyph" aria-hidden="true"></span>
+    <div>
+      <div class="wordmark">CRUCIBLE <span>FORGE FLOOR</span></div>
+      <div class="sub">Ophix Studio · virtual ad studio · v0.1</div>
+    </div>
+  </div>
+  <div class="top-right">
+    <span class="pill sealed" title="This build cannot upload, ship, create tickets or spend media credits.">◆ DRY RUN · SHIPPING SEALED</span>
+    <span class="pill" id="modePill">SIM</span>
+    <div class="meter" title="Model spend this job versus the job budget">
+      <div class="meter-label"><span id="spendLabel">$0.000</span> / <span id="budgetLabel">$2.00</span></div>
+      <div class="meter-bar"><i id="spendBar"></i></div>
+    </div>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- LEFT: job ticket + floor plan + power -->
+  <aside class="col left">
+    <section class="card">
+      <h2>Job ticket</h2>
+      <form id="brief" autocomplete="off">
+        <label>Brand<input name="brand" placeholder="e.g. Northwind Pet Co." /></label>
+        <label>Product<input name="product" placeholder="e.g. chew-safe dental comb" /></label>
+        <label>Product URL <em>(Recon reads it when web tools are on)</em><input name="url" type="url" placeholder="https://" /></label>
+        <label>Buyer<input name="audience" placeholder="leave blank to let Recon find them" /></label>
+        <div class="row2">
+          <label>Angle steer<input name="angle" placeholder="optional" /></label>
+          <label>Format / lane<input name="format" placeholder="optional" /></label>
+        </div>
+        <div class="row2">
+          <label>Length<input name="length" placeholder="30-45s" /></label>
+          <label>Offer / CTA<input name="offer" placeholder="optional" /></label>
+        </div>
+        <label>Canon: approved claims and product facts<textarea name="canon" rows="4" placeholder="Paste the brand skill's approved claims. Anything not here gets flagged NEEDS CLAIM APPROVAL."></textarea></label>
+        <label>Lead's notes<textarea name="notes" rows="2" placeholder="optional"></textarea></label>
+        <button type="button" class="ghost small" id="demoBrief">Load demo brief</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Floor plan <em>the layout is the pipeline</em></h2>
+      <ul id="floorPlan" class="plan"></ul>
+      <label class="check"><input type="checkbox" id="holdDirection" checked /> Hold at Direction for my pick</label>
+      <label class="check">Gate rework loops
+        <select id="reworkLimit"><option value="0">0</option><option value="1" selected>1</option><option value="2">2</option></select>
+      </label>
+    </section>
+
+    <section class="card">
+      <h2>Power</h2>
+      <div class="seg" role="radiogroup" aria-label="Run mode">
+        <button type="button" data-mode="sim" class="on">Simulated</button>
+        <button type="button" data-mode="live">Live (Claude)</button>
+      </div>
+      <div id="liveBox" class="live-box" hidden>
+        <label>Anthropic API key<input id="apiKey" type="password" placeholder="sk-ant-…" spellcheck="false" /></label>
+        <label class="check"><input type="checkbox" id="rememberKey" /> Remember on this device</label>
+        <label>Model
+          <select id="model">
+            <option value="claude-opus-5" selected>Claude Opus 5 · $5 / $25</option>
+            <option value="claude-sonnet-5">Claude Sonnet 5 · $2 / $10</option>
+            <option value="claude-haiku-4-5">Claude Haiku 4.5 · $1 / $5</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" id="webTools" checked /> Recon may search and read the web</label>
+        <p class="fine">The key stays in this browser and goes only to api.anthropic.com. Per-job cap below; the run halts when it's hit.</p>
+      </div>
+      <label>Job budget (USD)<input id="budget" type="number" min="0.1" step="0.1" value="2" /></label>
+      <div class="actions">
+        <button type="button" id="runBtn" class="primary">▶ Forge</button>
+        <button type="button" id="stopBtn" class="ghost" disabled>■ Halt</button>
+      </div>
+    </section>
+  </aside>
+
+  <!-- CENTER: the floor + feed -->
+  <section class="col center">
+    <div class="floor-wrap">
+      <canvas id="floor" width="384" height="256" aria-label="Pixel-art view of the Forge Floor. Each room is a crew member; the glowing ingot shows where the job is."></canvas>
+      <div id="overlay" class="overlay"></div>
+    </div>
+    <div class="status-strip">
+      <span id="jobLabel">No job on the floor.</span>
+      <span id="stageLabel"></span>
+    </div>
+    <section class="card feed-card">
+      <h2>Station feed</h2>
+      <ol id="feed" class="feed" aria-live="polite"></ol>
+    </section>
+  </section>
+
+  <!-- RIGHT: inspector / outbound / ledger -->
+  <aside class="col right">
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="inspect" class="on">Inspector</button>
+      <button type="button" role="tab" data-tab="outbound">Outbound <b id="outCount">0</b></button>
+      <button type="button" role="tab" data-tab="ledger">Ledger</button>
+    </div>
+    <section class="card tabpane" id="tab-inspect">
+      <div id="inspector"></div>
+    </section>
+    <section class="card tabpane" id="tab-outbound" hidden>
+      <div id="outbound"></div>
+    </section>
+    <section class="card tabpane" id="tab-ledger" hidden>
+      <div id="ledger"></div>
+    </section>
+  </aside>
+</main>
+
+<footer class="foot">
+  Crucible Forge Floor produces plans, scripts and prompts only. It generates no media, uploads nothing, opens no tickets and never ships.
+</footer>
+
+<script src="crew.js"></script>
+<script src="station.js"></script>
+</body>
+</html>
